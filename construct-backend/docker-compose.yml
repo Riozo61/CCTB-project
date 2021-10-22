@@ -1,0 +1,38 @@
+version: '3.7'
+
+services:
+  web:
+    restart: always
+    build: .
+    ports:
+      - "8888:80"
+
+  postgres:
+    image: postgres:12.2-alpine
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+    volumes:
+      - 'postgres_data:/var/lib/postgresql/data:rw'
+    ports:
+      - '5432:5432'
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    depends_on:
+      - postgres
+    environment:
+      PGADMIN_DEFAULT_EMAIL: dev@local.com
+      PGADMIN_DEFAULT_PASSWORD: pgAdmin
+    volumes:
+      - 'pgadmin_data:/var/lib/pgadmin:rw'
+    ports:
+      - '9999:80'
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+
+
