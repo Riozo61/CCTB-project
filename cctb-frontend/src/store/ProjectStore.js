@@ -3,8 +3,9 @@ import {makeAutoObservable} from 'mobx';
 export default class ProjectStore {
   constructor() {
     this._project = [
-      {id: 1, name: 'Проект 1'}]
-
+      {id: 1, nameProject: 'Проект 1', customer: 'Алексей', place: 'Садовая', timeline: '25.10.2021', estimation: 10000,  checked: false},
+      {id: 2, nameProject: 'Проект 2', customer: 'Алесандр', place: 'Пушкинская', timeline: '25.10.2021', estimation: 10000,  checked: false},
+    ]
     makeAutoObservable(this);
   };
 
@@ -17,3 +18,4 @@ export default class ProjectStore {
   };
 
 };
+

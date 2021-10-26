@@ -6,16 +6,24 @@ import React, { useContext } from "react";
 import { observer } from "mobx-react-lite";
 import { Context } from "..";
 import { Divider } from "@mui/material";
+import AppButtons from "../components/ProjectButtons/buttons";
+import { Checkbox } from "@mui/material";
 
 const Projects = observer(() => {
-  const { site } = useContext(Context);
+  const { project } = useContext(Context);
   return (
     <List>
-      {site.constrSite.map((s) => (
-        <div key={s.id}>
+    <AppButtons/>
+      {project.project.map((p) => (
+        <div key={p.id}>
         <ListItem disablePadding>
           <ListItemButton>
-            <ListItemText primary={s.name} secondary={s.address} />
+          <Checkbox checked={p.checked} />
+            <ListItemText primary={p.nameProject} secondary='Название проекта' />
+            <ListItemText primary={p.customer} secondary='Заказчик'/>
+            <ListItemText primary={p.place} secondary='Объект'/>
+            <ListItemText primary={p.timeline} secondary='Сроки' />
+            <ListItemText primary={p.estimation} secondary='Расчет'/>
           </ListItemButton>
         </ListItem>
         <Divider/>

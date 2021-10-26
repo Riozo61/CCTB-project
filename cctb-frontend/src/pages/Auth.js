@@ -1,4 +1,4 @@
-import { Button, Card, Container, TextField } from "@mui/material";
+import { Button, Card, Container, MenuItem, TextField } from "@mui/material";
 import { Box} from "@mui/system";
 import { observer } from "mobx-react-lite";
 import React from "react";
@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { useState} from "react";
 import { NavLink, useLocation, useHistory  } from "react-router-dom";
 import { Context } from "..";
-import { login, registration } from "../hhtp/userAPI";
+import { login, registration } from "../http/userAPI";
 import { LOGIN_ROUTE, PROJECTS_ROUTE, REGISTRATION_ROUTE } from "../utils/consts";
 
 const Auth = observer( () => {
@@ -17,8 +17,25 @@ const Auth = observer( () => {
   const isLogin = location.pathname === LOGIN_ROUTE;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [firstName, setFirstName] = useState('');
-  // const [lastName, setLastName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [role, setRole] = useState('');
+  const roles = [
+    {
+      value: 'manager',
+      label: 'Менеджер',
+    },
+    {
+      value: 'engineer',
+      label: 'Инженер',
+    },
+    {
+      value: 'worker',
+      label: 'Рабочий',
+    }
+
+  ];
+
 
 
   const click = async () => {
@@ -28,7 +45,7 @@ const Auth = observer( () => {
     if (isLogin) {
       data = await login(email, password);
     } else {
-      data = await registration(email, password);
+      data = await registration(email, password, role);
       console.log(data);
     }
 
@@ -101,8 +118,8 @@ const Auth = observer( () => {
               name="firstName"
               autoComplete="firstName"
               autoFocus
-              // value={firstName}
-              // onChange={e => setFirstName(e.target.value)}
+              value={firstName}
+              onChange={e => setFirstName(e.target.value)}
             />
             <TextField
               variant="outlined"
@@ -114,8 +131,8 @@ const Auth = observer( () => {
               name="lastName"
               autoComplete="lastName"
               
-              // value={lastName}
-              // onChange={e => setLastName(e.target.value)}
+              value={lastName}
+              onChange={e => setLastName(e.target.value)}
             />
             <TextField
               variant="outlined"
@@ -130,6 +147,25 @@ const Auth = observer( () => {
               value={email}
               onChange={e => setEmail(e.target.value)}
             />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              select
+              fullWidth
+              id="outlined-select-currency"
+              label="Роль"
+              name="role"
+              autoComplete="role"
+              value={role}
+              onChange={e => setRole(e.target.value)}
+            >
+            {roles.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+            {option.label}
+            </MenuItem>
+            ))}
+            </TextField>
             <TextField
               variant="outlined"
               margin="normal"

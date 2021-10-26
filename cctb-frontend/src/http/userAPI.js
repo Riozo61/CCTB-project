@@ -9,10 +9,10 @@ import jwt_decode from "jwt-decode";
 //   return jwt_decode(data.token);
 // };
 
-export const registration = async (email, password) => {
+export const registration = async (email, password, role) => {
   const { data } = await fetch("http://localhost:8080/api/user/registration", {
     method: "POST",
-    body: { email: email, password: password, role: "ADMIN" },
+    body: { email: email, password: password, role: role },
     headers: {
       "Content-Type": "application/json",
     },
@@ -22,7 +22,7 @@ export const registration = async (email, password) => {
 export const login = async (email, password) => {
   const { data } = await fetch("http://localhost:8080/api/user/registration", {
     method: "POST",
-    body: { email: email, password: password, role: "ADMIN" },
+    body: { email: email, password: password},
     headers: {
       "Content-Type": "application/json",
     },
