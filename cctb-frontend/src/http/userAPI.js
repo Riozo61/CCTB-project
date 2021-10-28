@@ -19,10 +19,33 @@ export const registration = async (email, password, role) => {
   });
   return jwt_decode(data.token);
 };
+
 export const login = async (email, password) => {
   const { data } = await fetch("http://localhost:8080/api/user/registration", {
     method: "POST",
     body: { email: email, password: password},
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return jwt_decode(data.token);
+};
+
+export const newProject = async (nameProject, customer, address, timeline, estimation) => {
+  const { data } = await fetch("http://localhost:8080/api/user/newproject", {
+    method: "POST",
+    body: { nameProject: nameProject, customer: customer, address: address, timeline: timeline, estimation: estimation },
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return jwt_decode(data.token);
+};
+
+export const projects = async (email, token) => {
+  const { data } = await fetch("http://localhost:8080/api/user/projects", {
+    method: "GET",
+    body: { email: email, token: token},
     headers: {
       "Content-Type": "application/json",
     },
