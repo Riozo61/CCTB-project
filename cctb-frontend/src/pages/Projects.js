@@ -11,6 +11,8 @@ import { Checkbox } from "@mui/material";
 
 const Projects = observer(() => {
   const { project } = useContext(Context);
+
+  
   return (
     <List>
     <AppButtons/>
@@ -21,7 +23,7 @@ const Projects = observer(() => {
           <Checkbox checked={p.checked} />
             <ListItemText primary={p.nameProject} secondary='Название проекта' />
             <ListItemText primary={p.customer} secondary='Заказчик'/>
-            <ListItemText primary={p.place} secondary='Объект'/>
+            <ListItemText primary={p.address} secondary='Объект'/>
             <ListItemText primary={p.timeline} secondary='Сроки' />
             <ListItemText primary={p.estimation} secondary='Расчет'/>
           </ListItemButton>
