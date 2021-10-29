@@ -69,6 +69,7 @@ const NewProject = () => {
         label="Название проекта"
         variant="outlined"
         margin='normal'
+        value={nameProject}
         onChange={e => setNameProject(e.target.value)}
       />
       <TextField
@@ -77,6 +78,7 @@ const NewProject = () => {
         label="Заказчик"
         variant="outlined"
         margin='normal'
+        value={customer}
         onChange={e => setCustomer(e.target.value)}
       />
       <TextField
@@ -85,6 +87,7 @@ const NewProject = () => {
         label="Адрес"
         variant="outlined"
         margin='normal'
+        value={address}
         onChange={e => setAddress(e.target.value)}
       />
       <TextField
@@ -93,6 +96,7 @@ const NewProject = () => {
         label="Сроки"
         variant="outlined"
         margin='normal'
+        value={timeline}
         onChange={e => setTimeline(e.target.value)}
       />
 
