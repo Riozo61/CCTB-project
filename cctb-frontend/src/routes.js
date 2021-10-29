@@ -1,7 +1,7 @@
 import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
 import NewOrder from "./pages/NewOrder";
-import NewProject from "./pages/NewProject";
+
 import OrderPage from "./pages/OrderPage";
 import Orders from "./pages/Orders";
 import Profile from "./pages/Profile";
@@ -40,10 +40,6 @@ export const authRoutes = [
   {
     path: PROFILE_ROUTE,
     Component: Profile,
-  },
-  {
-    path: NEW_PROJECT_ROUTE,
-    Component: NewProject,
   },
   {
     path: PROJECTS_ROUTE,
