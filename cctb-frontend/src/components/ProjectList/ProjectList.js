@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite';
 import React, { useContext } from 'react';
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import { Context } from '../../';
+import { Context } from '../../index';
 import { Divider, ListItem } from "@mui/material";
 import { Checkbox } from "@mui/material";
 

@@ -5,7 +5,7 @@ import React from "react";
 import { useContext } from "react";
 import { useState} from "react";
 import { NavLink, useLocation, useHistory  } from "react-router-dom";
-import { Context } from "..";
+import { Context } from "../index";
 import { login, registration } from "../http/userAPI";
 import { LOGIN_ROUTE, PROJECTS_ROUTE, REGISTRATION_ROUTE } from "../utils/consts";
 
@@ -38,25 +38,43 @@ const Auth = observer( () => {
 
 
 
+
   const click = async () => {
     try {
       let data;
     
-    if (isLogin) {
-      data = await login(email, password);
-    } else {
-      data = await registration(email, password, role);
-      console.log(data);
-    }
-
-    user.setUser(user);
-    user.setIsAuth(true);
-    history.push(PROJECTS_ROUTE);
+      if (isLogin) {
+        data = await login(email, password);
+        console.log(data);
+        user.setUser({
+          role: role,
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          token: data.token,
+        });
+        user.setToken(data.token);
+        user.setIsAuth(true);
+        console.log(user)
+        history.push(PROJECTS_ROUTE);
+        console.log(history)
+      } else {
+        data = await registration(email, password, role);
+        console.log(data);
+        user.setUser({
+          role: role,
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+        });
+        user.setToken(data.token);
+        user.setIsAuth(true);
+        history.push(PROJECTS_ROUTE);
+      }
     } catch (e) {
-      alert(e.response.data.message)
+      console.log(e);
     }
-    
-  }
+  };
 
   return (
     <Container>
@@ -64,7 +82,7 @@ const Auth = observer( () => {
         <h2>{isLogin ? "Авторизация" : "Регистрация"}</h2>
         <div>
         {isLogin ? 
-          <form>
+          <div>
             <TextField
               variant="outlined"
               margin="normal"
@@ -105,9 +123,9 @@ const Auth = observer( () => {
             Войти
               
             </Button>
-          </form>
+          </div>
         :
-        <form>
+        <div>
         <TextField
               variant="outlined"
               margin="normal"
@@ -142,6 +160,7 @@ const Auth = observer( () => {
               id="email"
               label="Электронная почта"
               name="email"
+              
               autoComplete="email"
               
               value={email}
@@ -190,7 +209,7 @@ const Auth = observer( () => {
             >
             Регистрация
             </Button>
-            </form>
+            </div>
         }
         </div>
         <Box>

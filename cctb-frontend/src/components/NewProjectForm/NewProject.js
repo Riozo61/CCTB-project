@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import React, { forwardRef, useContext, useState } from "react";
-import { Context } from "../..";
+import { Context } from "../../index";
 import NumberFormat from 'react-number-format';
 import PropTypes from 'prop-types';
 import {newProject} from '../../http/userAPI'

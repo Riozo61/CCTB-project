@@ -2,7 +2,7 @@ import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { observer } from "mobx-react-lite";
 import { useContext } from "react";
-import { Context } from "..";
+import { Context } from "../index";
 
 const Orders = observer(() => {
   const {area} = useContext(Context);

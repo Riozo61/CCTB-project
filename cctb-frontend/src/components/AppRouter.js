@@ -1,7 +1,7 @@
 import React from 'react';
 import { useContext } from 'react';
 import {Switch, Route, Redirect} from 'react-router-dom';
-import { Context } from '..';
+import { Context } from '../index';
 import { authRoutes, publicRoutes } from '../routes';
 import { LOGIN_ROUTE } from '../utils/consts';
 

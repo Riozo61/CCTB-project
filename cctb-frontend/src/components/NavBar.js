@@ -18,7 +18,7 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import { NavLink } from 'react-router-dom';
 import { ORDERS_ROUTE, PROFILE_ROUTE, PROJECTS_ROUTE, REGISTRATION_ROUTE } from '../utils/consts';
 import { useContext } from 'react';
-import { Context } from '..';
+import { Context } from '../index';
 import {observer} from 'mobx-react-lite'
 import { Button, Container } from '@mui/material';
 

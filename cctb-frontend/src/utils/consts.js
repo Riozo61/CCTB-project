@@ -5,6 +5,5 @@ export const ORDERPAGE_ROUTE = '/order';
 export const ORDERS_ROUTE = '/orders';
 export const CREATE_NEW_ORDER_ROUTE = '/neworder';
 export const PROFILE_ROUTE = '/profile';
-export const NEW_PROJECT_ROUTE = '/newproject';
 export const PROJECTS_ROUTE = '/projects';
 export const PROJECT_PAGE_ROUTE = '/project';
