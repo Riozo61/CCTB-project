@@ -3,7 +3,7 @@ import React, { forwardRef, useContext, useState } from "react";
 import { Context } from "../../index";
 import NumberFormat from 'react-number-format';
 import PropTypes from 'prop-types';
-import {newProject} from '../../http/userAPI'
+import {newProject} from '../../http/projectAPI'
 
 const NewProject = () => {
 
@@ -57,7 +57,13 @@ const NewProject = () => {
     let data;
 
     data = await newProject(nameProject, customer, address, timeline, estimation);
-    proj.setProject(data);
+    proj.setProject({
+      nameProject: nameProject,
+      customer: customer,
+      address: address,
+      timeline: timeline,
+      estimation: estimation
+    });
   }
   
 
