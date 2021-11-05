@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const {User} = require('../models/models')
+const {User} = require('../models/user')
 const uuid = require('uuid')
 const ApiError = require('../error/ApiError');
 
