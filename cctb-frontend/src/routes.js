@@ -1,15 +1,12 @@
 import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
-import NewOrder from "./pages/NewOrder";
-
-import OrderPage from "./pages/OrderPage";
-import Orders from "./pages/Orders";
+import OrderPage from "./pages/Order/OrderPage";
+import Orders from "./pages/Order/Orders";
 import Profile from "./pages/Profile";
-import ProjectPage from "./pages/ProjectPage";
-import Projects from "./pages/Projects";
+import ProjectPage from "./pages/Project/ProjectPage";
+import Projects from "./pages/Project/Projects";
 import {
   ADMIN_ROUTE,
-  CREATE_NEW_ORDER_ROUTE,
   LOGIN_ROUTE,
   ORDERPAGE_ROUTE,
   ORDERS_ROUTE,
@@ -29,12 +26,8 @@ export const authRoutes = [
     Component: Orders,
   },
   {
-    path: ORDERPAGE_ROUTE + "/:id",
+    path: ORDERPAGE_ROUTE + '/:id',
     Component: OrderPage,
-  },
-  {
-    path: CREATE_NEW_ORDER_ROUTE,
-    Component: NewOrder,
   },
   {
     path: PROFILE_ROUTE,
@@ -45,7 +38,7 @@ export const authRoutes = [
     Component: Projects,
   },
   {
-    path: PROJECT_PAGE_ROUTE,
+    path: PROJECT_PAGE_ROUTE + '/:id',
     Component: ProjectPage,
   },
 ];

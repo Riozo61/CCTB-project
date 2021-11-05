@@ -15,8 +15,8 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { NavLink } from 'react-router-dom';
-import { ORDERS_ROUTE, PROFILE_ROUTE, PROJECTS_ROUTE, REGISTRATION_ROUTE } from '../utils/consts';
+import { NavLink, useHistory } from 'react-router-dom';
+import { LOGIN_ROUTE, ORDERS_ROUTE, PROFILE_ROUTE, PROJECTS_ROUTE, REGISTRATION_ROUTE } from '../utils/consts';
 import { useContext } from 'react';
 import { Context } from '../index';
 import {observer} from 'mobx-react-lite'
@@ -27,9 +27,13 @@ import { Button, Container } from '@mui/material';
 
 const NavBar =  observer ( () => {
   const {user} = useContext(Context);
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
+  const logOut = () => {
+    user.setUser({})
+    user.setIsAuth(false)
+  }
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -147,11 +151,20 @@ const NavBar =  observer ( () => {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            <NavLink style={{color: 'white'}} to={ORDERS_ROUTE}>CONSTRUST|TABLE</NavLink>
-            <NavLink style={{color: 'white'}} to={PROJECTS_ROUTE}><Button>Проекты</Button></NavLink>
+            <NavLink style={{color: 'white'}} to={PROJECTS_ROUTE}>CONSTRUST|TABLE</NavLink>
+            <NavLink style={{color: 'white', display: 'flex'}} to={ORDERS_ROUTE}>Заказы</NavLink>
+
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <Button
+          variant='outlined'
+          color='inherit'
+          onClick={() => logOut()
+          }
+          >
+          Выйти
+          </Button>
             <IconButton
               size="large"
               edge="end"
@@ -189,6 +202,7 @@ const NavBar =  observer ( () => {
           >
             <MenuIcon />
           </IconButton>
+          
           <Typography
             variant="h6"
             noWrap
@@ -198,9 +212,6 @@ const NavBar =  observer ( () => {
           
             <NavLink style={{color: 'white'}} to={REGISTRATION_ROUTE}>CONSTRUST|TABLE</NavLink>
           </Typography>
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <Button color="inherit" variant='outlined' onClick={()=> user.setIsAuth(true)}>Авторизация</Button>
-            </Box>
           </Toolbar>
         </Container>
         
