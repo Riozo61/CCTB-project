@@ -1,4 +1,6 @@
 require('dotenv').config();
+const { CLIENT, DATABASE, PG_USER, PASSWORD, HOST, PG_PORT } = process.env
+
 module.exports = {
 "development": {
     "username": process.env.PG_USER,
