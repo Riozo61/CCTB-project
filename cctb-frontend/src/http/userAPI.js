@@ -1,10 +1,10 @@
 import jwt_decode from "jwt-decode";
 
-export const registration = async (email, password, role) => {
+export const registration = async (email, password, role, firstName, lastName, company) => {
   const response = await fetch("http://localhost:8080/api/user/registration", {
     method: "POST",
     mode: 'cors',
-    body: JSON.stringify({ email: email, password: password, role: role }),
+    body: JSON.stringify({ email: email, password: password, role: role, firstName: firstName, lastName:lastName, company: company }),
     headers: {
       "Content-Type": "application/json",
     },
@@ -34,7 +34,6 @@ export const login = async (email, password) => {
     localStorage.setItem('token', data.token)
     console.log(data)
     console.log(response)
-    localStorage.setItem('token', data.token)
     return data;
   } else {
     console.log(response)
@@ -42,16 +41,16 @@ export const login = async (email, password) => {
 };
 }
 
-export const check = async (email, token) => {
-  const response = await fetch('http://localhost:8080/api/user/auth', {
-    method: "GET",
-    mode: 'cors',
-    body: {email: email, token: token},
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-    localStorage.setItem('token', response.token)
-    return jwt_decode(response.token);    
-  }
+// export const check = async (email, token) => {
+//   const response = await fetch('http://localhost:8080/api/user/auth', {
+//     method: "GET",
+//     mode: 'cors',
+//     body: {email: email, token: token},
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   });
+//     localStorage.setItem('token', response.token)
+//     return jwt_decode(response.token);    
+//   }
 
