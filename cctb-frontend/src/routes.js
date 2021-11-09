@@ -3,11 +3,13 @@ import Auth from "./pages/Auth";
 import OrderPage from "./pages/Order/OrderPage";
 import Orders from "./pages/Order/Orders";
 import Profile from "./pages/Profile";
+import NewProjectPage from "./pages/Project/NewProjectPage";
 import ProjectPage from "./pages/Project/ProjectPage";
 import Projects from "./pages/Project/Projects";
 import {
   ADMIN_ROUTE,
   LOGIN_ROUTE,
+  NEW_PROJECT_ROUTE,
   ORDERPAGE_ROUTE,
   ORDERS_ROUTE,
   PROFILE_ROUTE,
@@ -36,6 +38,10 @@ export const authRoutes = [
   {
     path: PROJECTS_ROUTE,
     Component: Projects,
+  },
+  {
+    path: NEW_PROJECT_ROUTE,
+    Component: NewProjectPage
   },
   {
     path: PROJECT_PAGE_ROUTE + '/:id',

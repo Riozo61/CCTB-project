@@ -1,15 +1,27 @@
-import { Button, TextField } from "@mui/material";
+import {
+  Button,
+  Container,
+  Input,
+  MenuItem,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React, { forwardRef, useContext, useState } from "react";
-import { Context } from "../../index";
-import NumberFormat from 'react-number-format';
-import PropTypes from 'prop-types';
-import {newProject} from '../../http/projectAPI'
-
-const NewProject = () => {
-
-  const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
+import NumberFormat from "react-number-format";
+import PropTypes from "prop-types";
+import { createNewProject } from "../../http/projectAPI";
+import { Context } from "../..";
+import { useHistory } from "react-router";
+import { PROJECTS_ROUTE } from "../../utils/consts";
+import { observer } from "mobx-react-lite";
+const NewProject = observer(() => {
+  const NumberFormatCustom = forwardRef(function NumberFormatCustom(
+    props,
+    ref
+  ) {
     const { onChange, ...other } = props;
-  
+
     return (
       <NumberFormat
         {...other}
@@ -29,9 +41,9 @@ const NewProject = () => {
     );
   });
   const [values, setValues] = useState({
-    numberformat: '',
+    numberformat: "",
   });
-  
+
   NumberFormatCustom.propTypes = {
     name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -43,91 +55,279 @@ const NewProject = () => {
     });
   };
 
+  const { project } = useContext(Context);
+  const history = useHistory("");
 
-  const {proj} = useContext(Context);
-
-  const [nameProject, setNameProject] = useState('');
+  const [projectName, setProjectName] = useState("");
+  const [status, setStatus] = useState("");
+  const [contract, setContract] = useState("");
+  const [estimation, setEstimation] = useState("");
+  const [file, setFile] = useState("");
+  const [dateStart, setDateStart] = useState("");
+  const [dateEnd, setDateEnd] = useState("");
+  const [projManager, setProjManager] = useState("");
   const [customer, setCustomer] = useState('');
-  const [address, setAddress] = useState('');
-  const [timeline, setTimeline] = useState('');
-  const [estimation, setEstimation] = useState('');
-  
+  const [customerName, setCustomerName] = useState('');
+  const [payment, setPayment] = useState('');
+  const statuses = [
+    {
+      value: "offer",
+      label: "Ценовое предложение",
+    },
+    {
+      value: "during",
+      label: "В работе",
+    },
+    {
+      value: "complete",
+      label: "Выполнено",
+    },
+    {
+      value: "waiting",
+      label: "В ожидании",
+    },
+    {
+      value: "archive",
+      label: "Архивировано",
+    },
+  ];
+  const projManagers = [
+    { value: "manager1", label: "Руководитель 1" },
+    { value: "manager2", label: "Руководитель 2" },
+  ];
+  const varCustomers = [
+    { value: "company",
+      label:'Компания'
+},
+  {value: 'individual', label: 'Физ.лицо'}
+];
 
-  const createNewProj = async () => {
+  const paymentMethods = [
+    {value: 'cashless', label: 'Безналичная'},
+    {value: 'cash', label: 'Наличная'}
+  ]
+  const click = async () => {
+    try {
     let data;
 
-    data = await newProject(nameProject, customer, address, timeline, estimation);
-    proj.setProject({
-      nameProject: nameProject,
+    data = await createNewProject(
+      projectName,
+      status,
+      contract,
+      estimation,
+      file,
+      dateStart,
+      dateEnd,
+      projManager,
+      customer,
+      customerName,
+      payment
+    );
+    project.setProject({
+      projectName: projectName,
+      status: status,
+      contract: contract,
+      estimation: estimation,
+      file: file,
+      dateStart: dateStart,
+      dateEnd: dateEnd,
+      projManager: projManager,
       customer: customer,
-      address: address,
-      timeline: timeline,
-      estimation: estimation
+      customerName: customerName,
+      payment: payment
+
     });
+    if(data) {
+      history.push(PROJECTS_ROUTE);
+    }
+  } catch(e) {
+    console.log(e)
   }
-  
+    
+  };
 
   return (
+    <Container style={{ marginLeft: 10, marginRight: 10 }}>
     <div>
+    <h2>Создание нового проекта</h2>
       <TextField
         fullWidth={true}
         id="outlined-basic"
         label="Название проекта"
         variant="outlined"
-        margin='normal'
-        value={nameProject}
-        onChange={e => setNameProject(e.target.value)}
+        margin="normal"
+        required
+        value={projectName}
+        onChange={(e) => setProjectName(e.target.value)}
       />
       <TextField
-        fullWidth={true}
-        id="outlined-basic"
-        label="Заказчик"
         variant="outlined"
-        margin='normal'
-        value={customer}
-        onChange={e => setCustomer(e.target.value)}
-      />
+        margin="normal"
+        required
+        select
+        fullWidth
+        id="outlined-select-currency"
+        label="Статус"
+        name="status"
+        autoComplete="status"
+        value={status}
+        onChange={(e) => setStatus(e.target.value)}
+      >
+        {statuses.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </TextField>
       <TextField
-        fullWidth={true}
-        id="outlined-basic"
-        label="Адрес"
         variant="outlined"
-        margin='normal'
-        value={address}
-        onChange={e => setAddress(e.target.value)}
-      />
-      <TextField
-        fullWidth={true}
+        margin="normal"
+        required
+        fullWidth
         id="outlined-basic"
-        label="Сроки"
-        variant="outlined"
-        margin='normal'
-        value={timeline}
-        onChange={e => setTimeline(e.target.value)}
+        label="Номер договора"
+        name="contract"
+        autoComplete="contract"
+        value={contract}
+        onChange={(e) => setContract(e.target.value)}
       />
-
-{/* Не работает, если вводить цифры подряд, вводятся только по одной и курсор пропадает */}
+      {/* Не работает, если вводить цифры подряд, вводятся только по одной и курсор пропадает */}
       <TextField
         label="Расчет"
         value={values.numberformat}
         onChange={handleChange}
         fullWidth={true}
         variant="outlined"
-        margin='normal'
+        margin="normal"
+        required
         name="numberformat"
         id="formatted-numberformat-input"
         InputProps={{
           inputComponent: NumberFormatCustom,
         }}
-        
       />
-      <Button
-      variant="contained"
-          onClick={createNewProj}
-          color="success"
+      <input
+        accept="text/*"
+        style={{ display: "none" }}
+        id="raised-button-file"
+        multiple
+        type="file"
+      />
+      <label htmlFor="raised-button-file">
+        <Button variant="outlined" component="span">
+          Загрузить файл
+        </Button>
+      </label>
+      <div>
+        <TextField
+          margin="normal"
+          style={{ marginRight: 20 }}
+          id="date"
+          label="Начало работ"
+          type="date"
+          sx={{ width: 220 }}
+          value={dateStart}
+          onChange={(e) => setDateStart(e.target.value)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <TextField
+          margin="normal"
+          id="date"
+          label="Окончание работ"
+          type="date"
+          sx={{ width: 220 }}
+          value={dateEnd}
+          onChange={(e) => setDateEnd(e.target.value)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+      </div>
+      <TextField
+        variant="outlined"
+        margin="normal"
+        required
+        select
+        fullWidth
+        id="outlined-select-currency"
+        label="Руководитель проекта"
+        name="projManager"
+        autoComplete="projManager"
+        value={projManager}
+        onChange={(e) => setProjManager(e.target.value)}
       >
-      Добавить новый проект</Button>
-    </div>
+        {projManagers.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </TextField>
+      <Typography>Заказчик</Typography>
+      <TextField
+        variant="outlined"
+        margin="normal"
+        required
+        select
+        fullWidth
+        id="outlined-select-currency"
+        label="Заказчик"
+        name="projManager"
+        autoComplete="projManager"
+        value={customer}
+        onChange={(e) => setCustomer(e.target.value)}
+      >
+        {varCustomers.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </TextField>
+      </div>
+
+      <TextField
+        fullWidth={true}
+        id="outlined-basic"
+        label={customer === 'company' ? 'Название компании' : 'ФИО'}
+        variant="outlined"
+        margin="normal"
+        required
+        value={customerName}
+        onChange={(e) => setCustomerName(e.target.value)}
+      />
+      <TextField
+        variant="outlined"
+        margin="normal"
+        required
+        select
+        fullWidth
+        id="outlined-select-currency"
+        label="Форма оплаты"
+        name="payment"
+        autoComplete="payment"
+        value={payment}
+        onChange={(e) => setPayment(e.target.value)}
+      >
+        {paymentMethods.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </TextField>
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="success"
+        className="submit"
+        onClick={click}
+        style={{ marginTop: 15 }}
+      >
+        Создать проект
+      </Button>
+      
+    </Container>
   );
-};
+});
 export default NewProject;
