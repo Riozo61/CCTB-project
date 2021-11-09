@@ -23,7 +23,7 @@ class UserController {
             return next(ApiError.badRequest('Пользователь с таким email уже существует'))
         }
         const hashPassword = await bcrypt.hash(password, 5)
-        const user = await User.User.create({email, role, password: hashPassword})
+        const user = await User.User.create({firstName, lastName,email, password, role,company, password: hashPassword})
         const token = generateJwt(user.id, user.email, user.role)
         return res.json({token})
     }
