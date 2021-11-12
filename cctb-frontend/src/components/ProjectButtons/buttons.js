@@ -10,7 +10,7 @@ const AppButtons = () => {
 
   return (
     <div>
-    <Stack direction="row" spacing={2}>
+    <Stack direction="row" spacing={2} style={{marginLeft: 20}}>
       <div style={{ marginBottom: 40 }}>
         <Button
           variant="contained"

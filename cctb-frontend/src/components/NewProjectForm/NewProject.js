@@ -7,54 +7,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { forwardRef, useContext, useState } from "react";
-import NumberFormat from "react-number-format";
-import PropTypes from "prop-types";
+import React, { useContext, useState } from "react";
 import { createNewProject } from "../../http/projectAPI";
 import { Context } from "../..";
 import { useHistory } from "react-router";
 import { PROJECTS_ROUTE } from "../../utils/consts";
 import { observer } from "mobx-react-lite";
+
+
 const NewProject = observer(() => {
-  const NumberFormatCustom = forwardRef(function NumberFormatCustom(
-    props,
-    ref
-  ) {
-    const { onChange, ...other } = props;
-
-    return (
-      <NumberFormat
-        {...other}
-        getInputRef={ref}
-        onValueChange={(values) => {
-          onChange({
-            target: {
-              name: props.name,
-              value: values.value,
-            },
-          });
-        }}
-        thousandSeparator
-        isNumericString
-        prefix="$"
-      />
-    );
-  });
-  const [values, setValues] = useState({
-    numberformat: "",
-  });
-
-  NumberFormatCustom.propTypes = {
-    name: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-  };
-  const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value,
-    });
-  };
-
   const { project } = useContext(Context);
   const history = useHistory("");
 
@@ -69,6 +30,8 @@ const NewProject = observer(() => {
   const [customer, setCustomer] = useState('');
   const [customerName, setCustomerName] = useState('');
   const [payment, setPayment] = useState('');
+  const [currency, setCurrency] = useState('');
+
   const statuses = [
     {
       value: "offer",
@@ -100,12 +63,19 @@ const NewProject = observer(() => {
       label:'Компания'
 },
   {value: 'individual', label: 'Физ.лицо'}
-];
+  ];
 
   const paymentMethods = [
     {value: 'cashless', label: 'Безналичная'},
     {value: 'cash', label: 'Наличная'}
+  ];
+
+  const currencies = [
+    {value: '$', label: '$'},
+    {value: '€', label: '€'},
+    {value: '₽', label: '₽'},
   ]
+
   const click = async () => {
     try {
     let data;
@@ -139,11 +109,15 @@ const NewProject = observer(() => {
     });
     if(data) {
       history.push(PROJECTS_ROUTE);
+      console.log(data)
+    }
+    else{
+      console.log(data)
     }
   } catch(e) {
     console.log(e)
   }
-    
+  
   };
 
   return (
@@ -194,18 +168,36 @@ const NewProject = observer(() => {
       {/* Не работает, если вводить цифры подряд, вводятся только по одной и курсор пропадает */}
       <TextField
         label="Расчет"
-        value={values.numberformat}
-        onChange={handleChange}
-        fullWidth={true}
+        fullWidth={false}
         variant="outlined"
         margin="normal"
         required
         name="numberformat"
         id="formatted-numberformat-input"
-        InputProps={{
-          inputComponent: NumberFormatCustom,
-        }}
+        type='number'
+        value={estimation}
+        onChange={(e) => setEstimation(e.target.value)}
       />
+      <TextField
+        variant="outlined"
+        margin="normal"
+        required
+        select
+        style={{width: 150, marginLeft: 10}}
+        id="outlined-select-currency"
+        label="Валюта"
+        name="status"
+        autoComplete="status"
+        value={currency}
+        onChange={(e) => setCurrency(e.target.value)}
+      >
+        {currencies.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </TextField>
+      <div>
       <input
         accept="text/*"
         style={{ display: "none" }}
@@ -218,6 +210,7 @@ const NewProject = observer(() => {
           Загрузить файл
         </Button>
       </label>
+      </div>
       <div>
         <TextField
           margin="normal"
