@@ -41,16 +41,16 @@ export const login = async (email, password) => {
 };
 }
 
-// export const check = async (email, token) => {
-//   const response = await fetch('http://localhost:8080/api/user/auth', {
-//     method: "GET",
-//     mode: 'cors',
-//     body: {email: email, token: token},
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   });
-//     localStorage.setItem('token', response.token)
-//     return jwt_decode(response.token);    
-//   }
+export const check = async (email, token) => {
+  const response = await fetch('http://localhost:8080/api/user/auth', {
+    method: "GET",
+    mode: 'cors',
+    body: {email: email, token: token},
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+    localStorage.setItem('token', response.token)
+    return jwt_decode(response.token);    
+  }
 
