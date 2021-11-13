@@ -1,9 +1,9 @@
 import { Button, Stack } from '@mui/material';
 import React from 'react'
 import { NavLink } from 'react-router-dom';
-import { NEW_ORDER_ROUTE } from '../../utils/consts';
+import { NEW_MATERIAL_ROUTE} from '../../utils/consts';
 
-const OrderButtons = () => {
+const MaterialButtons = () => {
   return (
   <div>
   <Stack direction="row" spacing={2} style={{marginLeft: 20}}>
@@ -12,8 +12,8 @@ const OrderButtons = () => {
         variant="contained"
         color="success"
       >
-      <NavLink to={NEW_ORDER_ROUTE} style={{textDecoration: 'none', color: 'white'}}>
-        Создать заявку
+      <NavLink to={NEW_MATERIAL_ROUTE} style={{textDecoration: 'none', color: 'white'}}>
+        Создать заявку на материал/оборудование
       </NavLink>
       </Button>
     </div>
@@ -32,5 +32,4 @@ const OrderButtons = () => {
 );
 };
 
-export default OrderButtons
-
+export default MaterialButtons

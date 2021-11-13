@@ -191,7 +191,6 @@ const NavBar =  observer ( () => {
           </Box>
         </Toolbar>
         :
-        <Container>
         <Toolbar>
           <IconButton
             size="large"
@@ -213,7 +212,6 @@ const NavBar =  observer ( () => {
             <NavLink style={{color: 'white'}} to={REGISTRATION_ROUTE}>CONSTRUST|TABLE</NavLink>
           </Typography>
           </Toolbar>
-        </Container>
         
       }
       </AppBar>

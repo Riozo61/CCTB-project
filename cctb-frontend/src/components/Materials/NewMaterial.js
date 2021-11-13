@@ -11,47 +11,70 @@ import { PROJECTS_ROUTE } from "../../utils/consts";
 import { observer } from "mobx-react-lite";
 
 
-const NewOrder = observer(() => {
+const NewMaterial = observer(() => {
   const history = useHistory("");
 
-  const [orderName, setOrderName] = useState("");
+  const [type, setType] = useState('')
+  const [name, setName] = useState("");
+
   const [supplier, setSupplier] = useState("");
-  const [project, setProject] = useState("");
   const [measure, setMeasure] = useState("");
-  const [photo, setPhoto] = useState("");
   const [shopName, setShopName] = useState("");
-  const [brand, setBrand] = useState("");
   const [quantity, setQuantity] = useState('');
 
-  const brands = [
+
+  const [brand, setBrand] = useState("");
+  const [typeObj, setTypeObj] = useState('');
+  const [serialNumber, setSerialNumber] = useState('');
+
+  const brandsMat = [
     {
       value: "brand1",
-      label: "Бренд 1",
+      label: "Бренд материала 1",
     },
     {
       value: "brand2",
-      label: "Бренд 2",
+      label: "Бренд материала 2",
     },
     {
       value: "brand3",
-      label: "Бренд 3",
+      label: "Бренд материала 3",
     },
     {
       value: "brand4",
-      label: "Бренд 4",
+      label: "Бренд материала 4",
     },
     {
       value: "brand5",
-      label: "Бренд 5",
+      label: "Бренд материала 5",
     },
   ];
+  const brandsEq = [
+    {
+      value: "brand1",
+      label: "Бренд оборудования 1",
+    },
+    {
+      value: "brand2",
+      label: "Бренд оборудования 2",
+    },
+    {
+      value: "brand3",
+      label: "Бренд оборудования 3",
+    },
+    {
+      value: "brand4",
+      label: "Бренд оборудования 4",
+    },
+    {
+      value: "brand5",
+      label: "Бренд оборудования 5",
+    },
+  ];
+
   const suppliers = [
     { value: "supplier1", label: "Поставщик 1" },
     { value: "supplier2", label: "Поставщик 2" },
-  ];
-  const projects = [
-    { value: "project1", label: "Проект 1" },
-    { value: "project2", label: "Проект 2" },
   ];
   const measures = [
     {value: 'number', label: 'шт'},
@@ -60,6 +83,10 @@ const NewOrder = observer(() => {
     {value: 'meter', label: 'м'},
     {value: 'meter2', label: 'м2'},
     {value: 'meter3', label: 'м3'},
+  ];
+  const types = [
+    {value: 'material', label: 'Материал'},
+    {value: 'equipment', label: 'Оборудование'}
   ]
 
   const click = async () => {
@@ -81,7 +108,29 @@ const NewOrder = observer(() => {
 
   return (
     <Container style={{ marginLeft: 10, marginRight: 10 }}>
-    <h2>Создание новой заявки</h2>
+    <h2>Создание новой заявки на материал/оборудование</h2>
+
+    <TextField
+        variant="outlined"
+        margin="normal"
+        required
+        select
+        fullWidth
+        id="outlined-select-currency"
+        label="Материал/оборудование"
+        name="status"
+        autoComplete="status"
+        value={type}
+        onChange={(e) => setType(e.target.value)}
+      >
+        {types.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </TextField>
+      {type === 'material' ?
+      <div>
       <TextField
         fullWidth={true}
         id="outlined-basic"
@@ -89,28 +138,9 @@ const NewOrder = observer(() => {
         variant="outlined"
         margin="normal"
         required
-        value={orderName}
-        onChange={(e) => setOrderName(e.target.value)}
+        value={name}
+        onChange={(e) => setName(e.target.value)}
       />
-      <TextField
-        variant="outlined"
-        margin="normal"
-        required
-        select
-        fullWidth
-        id="outlined-select-currency"
-        label="Название проекта"
-        name="status"
-        autoComplete="status"
-        value={project}
-        onChange={(e) => setProject(e.target.value)}
-      >
-        {projects.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </TextField>
       <TextField
         variant="outlined"
         margin="normal"
@@ -124,7 +154,7 @@ const NewOrder = observer(() => {
         value={brand}
         onChange={(e) => setBrand(e.target.value)}
       >
-      {brands.map((option) => (
+      {brandsMat.map((option) => (
           <MenuItem key={option.value} value={option.value}>
             {option.label}
           </MenuItem>
@@ -170,6 +200,7 @@ const NewOrder = observer(() => {
         label='Количество'
         variant="outlined"
         margin="normal"
+        type='number'
         required
         value={quantity}
         onChange={(e) => setQuantity(e.target.value)}
@@ -195,21 +226,75 @@ const NewOrder = observer(() => {
         ))}
       </TextField>
       </div>
-      <input
-        accept="image/*"
-        style={{ display: "none" }}
-        id="raised-button-file"
-        multiple
-        type="file"
-        value={photo}
-        onChange={(e) => setPhoto(e.target.value)}
+      </div>
+      :
+      <div>
+      <TextField
+        fullWidth={true}
+        style={{marginRight: 10}}
+        id="outlined-basic"
+        label='Название оборудования'
+        variant="outlined"
+        margin="normal"
+        required
+        value={name}
+        onChange={(e) => setName(e.target.value)}
       />
-      <label htmlFor="raised-button-file">
-        <Button variant="outlined" component="span">
-          Загрузить фото
-        </Button>
-      </label>
-
+      <TextField
+        fullWidth={true}
+        style={{marginRight: 10}}
+        id="outlined-basic"
+        label='Тип'
+        variant="outlined"
+        margin="normal"
+        required
+        value={typeObj}
+        onChange={(e) => setTypeObj(e.target.value)}
+      />
+      <TextField
+        variant="outlined"
+        margin="normal"
+        style={{width: 160}}
+        required
+        select
+        fullWid={false}
+        id="outlined-select-currency"
+        label="Бренд"
+        name="measure"
+        autoComplete="measure"
+        value={measure}
+        onChange={(e) => setMeasure(e.target.value)}
+      >
+        {brandsEq.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </TextField>
+      <TextField
+        fullWidth={true}
+        style={{marginRight: 10}}
+        id="outlined-basic"
+        label='Тип'
+        variant="outlined"
+        margin="normal"
+        required
+        value={typeObj}
+        onChange={(e) => setTypeObj(e.target.value)}
+      />
+      <TextField
+        fullWidth={true}
+        style={{marginRight: 10}}
+        id="outlined-basic"
+        label='Серийный номер'
+        variant="outlined"
+        margin="normal"
+        required
+        value={serialNumber}
+        onChange={(e) => setSerialNumber(e.target.value)}
+      />
+      </div>
+      }
       <Button
         type="submit"
         fullWidth
@@ -221,8 +306,8 @@ const NewOrder = observer(() => {
       >
         Создать заявку
       </Button>
-      
     </Container>
   );
 });
-export default NewOrder;
+export default NewMaterial;
+

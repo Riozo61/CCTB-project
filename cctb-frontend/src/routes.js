@@ -1,3 +1,5 @@
+import NewMaterial from "./components/Materials/NewMaterial";
+import NewOrder from "./components/NewOrderForm/NewOrder";
 import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
 import OrderPage from "./pages/Order/OrderPage";
@@ -9,6 +11,8 @@ import Projects from "./pages/Project/Projects";
 import {
   ADMIN_ROUTE,
   LOGIN_ROUTE,
+  NEW_MATERIAL_ROUTE,
+  NEW_ORDER_ROUTE,
   NEW_PROJECT_ROUTE,
   ORDERPAGE_ROUTE,
   ORDERS_ROUTE,
@@ -44,9 +48,17 @@ export const authRoutes = [
     Component: NewProjectPage
   },
   {
+    path: NEW_ORDER_ROUTE,
+    Component: NewOrder
+  },
+  {
     path: PROJECT_PAGE_ROUTE + '/:id',
     Component: ProjectPage,
   },
+  {
+    path: NEW_MATERIAL_ROUTE,
+    Component: NewMaterial,
+  }
 ];
 
 export const publicRoutes = [
