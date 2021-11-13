@@ -1,45 +1,33 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Projects', {
+    await queryInterface.createTable('Orders', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      projectName: {
+      orderName: {
         type: Sequelize.STRING
       },
-      status: {
+      supplier: {
         type: Sequelize.STRING
       },
-      contract: {
+      project: {
         type: Sequelize.STRING
       },
-      estimation: {
+      measure: {
+        type: Sequelize.STRING
+      },
+      shopname: {
+        type: Sequelize.STRING
+      },
+      brand: {
+        type: Sequelize.STRING
+      },
+      quantity: {
         type: Sequelize.FLOAT
-      },
-      dateStart: {
-        type: Sequelize.DATEONLY
-      },
-      dateEnd: {
-        type: Sequelize.DATEONLY
-      },
-      projManager: {
-        type: Sequelize.STRING
-      },
-      customer: {
-        type: Sequelize.STRING
-      },
-      customerName: {
-        type: Sequelize.STRING
-      },
-      payment: {
-        type: Sequelize.STRING
-      },
-      currency: {
-        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -52,6 +40,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Projects');
+    await queryInterface.dropTable('orders');
   }
 };
