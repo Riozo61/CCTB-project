@@ -5,13 +5,16 @@ import {
   TextField,
 
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
-import { PROJECTS_ROUTE } from "../../utils/consts";
+import { ORDERS_ROUTE } from "../../utils/consts";
 import { observer } from "mobx-react-lite";
+import { createNewEquipment, createNewMaterial } from "../../http/materialAPI";
+import { Context } from "../..";
 
 
 const NewMaterial = observer(() => {
+  const {material} = useContext(Context);
   const history = useHistory("");
 
   const [type, setType] = useState('')
@@ -93,8 +96,42 @@ const NewMaterial = observer(() => {
     try {
     let data;
 
+    if(type === 'Материал') {
+    data = await createNewMaterial(
+      type,
+      name,
+      supplier,
+      measure,
+      shopName,
+      quantity,
+    );
+      material.setMaterial({
+      type: type,
+      name: name,
+      supplier: supplier,
+      measure: measure,
+      shopName: shopName,
+      quantity: quantity,
+      })
+    } else {
+      data = await createNewEquipment(
+      type,
+      name,
+      brand,
+      typeObj,
+      serialNumber,
+      );
+      material.setMaterial({
+      type: type,
+      name: name,
+      brand: brand,
+      typeObj: typeObj,
+      serialNumber: serialNumber,
+      })
+
+    }
     if(data) {
-      history.push(PROJECTS_ROUTE);
+      history.push(ORDERS_ROUTE);
       console.log(data)
     }
     else{
@@ -124,12 +161,12 @@ const NewMaterial = observer(() => {
         onChange={(e) => setType(e.target.value)}
       >
         {types.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem key={option.value} value={option.label}>
             {option.label}
           </MenuItem>
         ))}
       </TextField>
-      {type === 'material' ?
+      {type === 'Материал' ?
       <div>
       <TextField
         fullWidth={true}
@@ -155,7 +192,7 @@ const NewMaterial = observer(() => {
         onChange={(e) => setBrand(e.target.value)}
       >
       {brandsMat.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem key={option.value} value={option.label}>
             {option.label}
           </MenuItem>
         ))}
@@ -175,7 +212,7 @@ const NewMaterial = observer(() => {
         onChange={(e) => setSupplier(e.target.value)}
       >
         {suppliers.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem key={option.value} value={option.label}>
             {option.label}
           </MenuItem>
         ))}
@@ -211,7 +248,7 @@ const NewMaterial = observer(() => {
         style={{width: 160}}
         required
         select
-        fullWid={false}
+        fullWidth={false}
         id="outlined-select-currency"
         label="Ед.измерения"
         name="measure"
@@ -220,7 +257,7 @@ const NewMaterial = observer(() => {
         onChange={(e) => setMeasure(e.target.value)}
       >
         {measures.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem key={option.value} value={option.label}>
             {option.label}
           </MenuItem>
         ))}
@@ -257,7 +294,7 @@ const NewMaterial = observer(() => {
         style={{width: 160}}
         required
         select
-        fullWid={false}
+        fullWidth={false}
         id="outlined-select-currency"
         label="Бренд"
         name="measure"
@@ -266,22 +303,11 @@ const NewMaterial = observer(() => {
         onChange={(e) => setMeasure(e.target.value)}
       >
         {brandsEq.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem key={option.value} value={option.label}>
             {option.label}
           </MenuItem>
         ))}
       </TextField>
-      <TextField
-        fullWidth={true}
-        style={{marginRight: 10}}
-        id="outlined-basic"
-        label='Тип'
-        variant="outlined"
-        margin="normal"
-        required
-        value={typeObj}
-        onChange={(e) => setTypeObj(e.target.value)}
-      />
       <TextField
         fullWidth={true}
         style={{marginRight: 10}}

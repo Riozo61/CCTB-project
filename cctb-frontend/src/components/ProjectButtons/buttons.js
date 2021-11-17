@@ -1,7 +1,6 @@
 import React from "react";
 import Button from "@mui/material/Button";
-import { useHistory, useLocation } from "react-router";
-import { NEW_PROJECT_ROUTE, PROJECTS_ROUTE } from "../../utils/consts";
+import { NEW_PROJECT_ROUTE } from "../../utils/consts";
 import { Stack } from "@mui/material";
 import { NavLink } from "react-router-dom";
 

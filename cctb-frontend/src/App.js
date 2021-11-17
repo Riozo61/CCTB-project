@@ -9,22 +9,24 @@ import { check } from "./http/userAPI";
 
 
 const App = observer ( () => {
-  // const {user} = useContext(Context);
-  // const [loading, setLoading] = useState(true);
-
-  // useEffect(() => {
-  //   check().then(data => {
-  //     user.setUser(true)
-  //     user.setIsAuth(true)
-  //   }).finally(() => setLoading(false))
-  // }, [])
-  // if (loading) {
-  //   return (
-  //   <div>
-  //     Loading...
-  //   </div>
-  //   )
+  const {user} = useContext(Context);
+  const [loading, setLoading] = useState(true);
+  // if (localStorage.token) {
+  //   useEffect(() => {
+  //     check().then(data => {
+  //       user.setUser(true)
+  //       user.setIsAuth(true)
+  //     }).finally(() => setLoading(false))
+  //   }, [])
+  //   if (loading) {
+  //     return (
+  //     <div>
+  //       Loading...
+  //     </div>
+  //     )
+  //   }
   // }
+  
   return (
     <BrowserRouter>
       <NavBar />

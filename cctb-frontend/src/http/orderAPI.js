@@ -20,6 +20,7 @@ export const createNewOrder = async (
   });
   if (response.status === 200) {
     const data = await response.json();
+    console.log(data)
     return data;
   } else {
     console.log(response);
@@ -27,17 +28,17 @@ export const createNewOrder = async (
   }
 };
 
-export const getOrders = async (email, token) => {
-  const response = await fetch("http://localhost:8080/api/orders", {
+export const getOrders = async (limit, page) => {
+  const response = await fetch(`http://localhost:8080/api/order/orders?limit=${limit}&page=${page}`, {
     method: "GET",
     mode: "cors",
-    body: JSON.stringify({ email: email, token: token }),
     headers: {
       "Content-Type": "application/json",
     },
   });
   if (response.status === 200) {
     const data = await response.json();
+    console.log(data)
     return data;
   } else {
     console.log(response);
