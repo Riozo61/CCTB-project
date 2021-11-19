@@ -5,13 +5,16 @@ import {
   TextField,
 
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
-import { PROJECTS_ROUTE } from "../../utils/consts";
+import { ORDERS_ROUTE } from "../../utils/consts";
 import { observer } from "mobx-react-lite";
+import { createNewOrder } from "../../http/orderAPI";
+import { Context } from "../..";
 
 
 const NewOrder = observer(() => {
+  const {order} = useContext(Context)
   const history = useHistory("");
 
   const [orderName, setOrderName] = useState("");
@@ -66,8 +69,30 @@ const NewOrder = observer(() => {
     try {
     let data;
 
+    data = await createNewOrder(
+      orderName,
+      supplier,
+      project,
+      measure,
+      photo,
+      shopName,
+      brand,
+      quantity
+    );
+
+    order.setOrder({
+      orderName: orderName,
+      supplier: supplier,
+      project: project,
+      measure: measure,
+      photo: photo,
+      shopName: shopName,
+      brand: brand,
+      quantity: quantity,
+    })
+
     if(data) {
-      history.push(PROJECTS_ROUTE);
+      history.push(ORDERS_ROUTE);
       console.log(data)
     }
     else{
@@ -106,7 +131,7 @@ const NewOrder = observer(() => {
         onChange={(e) => setProject(e.target.value)}
       >
         {projects.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem key={option.value} value={option.label}>
             {option.label}
           </MenuItem>
         ))}
@@ -125,7 +150,7 @@ const NewOrder = observer(() => {
         onChange={(e) => setBrand(e.target.value)}
       >
       {brands.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem key={option.value} value={option.label}>
             {option.label}
           </MenuItem>
         ))}
@@ -145,7 +170,7 @@ const NewOrder = observer(() => {
         onChange={(e) => setSupplier(e.target.value)}
       >
         {suppliers.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem key={option.value} value={option.label}>
             {option.label}
           </MenuItem>
         ))}
@@ -180,7 +205,7 @@ const NewOrder = observer(() => {
         style={{width: 160}}
         required
         select
-        fullWid={false}
+        fullWidth={false}
         id="outlined-select-currency"
         label="Ед.измерения"
         name="measure"
@@ -189,7 +214,7 @@ const NewOrder = observer(() => {
         onChange={(e) => setMeasure(e.target.value)}
       >
         {measures.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem key={option.value} value={option.label}>
             {option.label}
           </MenuItem>
         ))}

@@ -1,19 +1,17 @@
-import * as React from "react";
+import React, { useContext, useEffect } from 'react'
 import { observer } from "mobx-react-lite";
-import OrderButtons from "../../components/OrderButtons/OrderButtons";
-import { List } from "@mui/material";
-import OrderList from "../../components/OrderList/OrderList";
 import OrderTabs from "../../components/Tabs/OrderTabs";
+import { Context } from "../..";
+import { getOrders } from '../../http/orderAPI';
 
 const Orders = observer(() => {
-
+  const {order} = useContext(Context)
+  useEffect(() => {
+    getOrders().then(data => {order.setOrder(data.rows)});
+  }, [])
   return (
     <div>
-    <OrderTabs/>
-    {/* <List>
-      <OrderButtons />
-      <OrderList/>
-    </List> */}
+    <OrderTabs orders={order}/>
     </div>
   );
 });

@@ -1,17 +1,12 @@
 import { observer } from 'mobx-react-lite';
-import React, { useContext } from 'react';
-import { Context } from '../../index';
+import React from 'react';
 import OrderItem from './OrderItem';
-import { useHistory } from 'react-router';
 
-const OrderList = observer( () => {
-  const { order } = useContext(Context);
-  const history = useHistory();
-  console.log(history)
+const OrderList = observer( ({orders}) => {
 
   return (
     <div>
-      {order.order.map((ord) => (
+      {orders.map((ord) => (
           <OrderItem key={ord.id} order={ord}/>
       ))}
     </div>

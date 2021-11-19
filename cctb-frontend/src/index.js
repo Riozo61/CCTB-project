@@ -7,6 +7,7 @@ import { createContext } from 'react';
 import UserStore from './store/UserStore';
 import OrderStore from './store/OrderStore';
 import ProjectStore from './store/ProjectStore';
+import MaterialStore from './store/MaterialStore';
 
 export const Context = createContext(null);
 console.log(process.env.REACT_APP_API_URL)
@@ -17,6 +18,7 @@ ReactDOM.render(
     user: new UserStore(),
     order: new OrderStore(),
     project: new ProjectStore(),
+    material: new MaterialStore(),
 
   }}>
     <App />

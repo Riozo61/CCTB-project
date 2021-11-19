@@ -1,9 +1,7 @@
 import {
   Button,
   Container,
-  Input,
   MenuItem,
-  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -91,7 +89,8 @@ const NewProject = observer(() => {
       projManager,
       customer,
       customerName,
-      payment
+      payment,
+      currency
     );
     project.setProject({
       projectName: projectName,
@@ -104,7 +103,8 @@ const NewProject = observer(() => {
       projManager: projManager,
       customer: customer,
       customerName: customerName,
-      payment: payment
+      payment: payment,
+      currency: currency
 
     });
     if(data) {
@@ -148,7 +148,7 @@ const NewProject = observer(() => {
         onChange={(e) => setStatus(e.target.value)}
       >
         {statuses.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem key={option.value} value={option.label}>
             {option.label}
           </MenuItem>
         ))}
@@ -165,7 +165,6 @@ const NewProject = observer(() => {
         value={contract}
         onChange={(e) => setContract(e.target.value)}
       />
-      {/* Не работает, если вводить цифры подряд, вводятся только по одной и курсор пропадает */}
       <TextField
         label="Расчет"
         fullWidth={false}
@@ -192,7 +191,7 @@ const NewProject = observer(() => {
         onChange={(e) => setCurrency(e.target.value)}
       >
         {currencies.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem key={option.value} value={option.label}>
             {option.label}
           </MenuItem>
         ))}
@@ -252,7 +251,7 @@ const NewProject = observer(() => {
         onChange={(e) => setProjManager(e.target.value)}
       >
         {projManagers.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem key={option.value} value={option.label}>
             {option.label}
           </MenuItem>
         ))}
@@ -272,7 +271,7 @@ const NewProject = observer(() => {
         onChange={(e) => setCustomer(e.target.value)}
       >
         {varCustomers.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem key={option.value} value={option.label}>
             {option.label}
           </MenuItem>
         ))}
@@ -303,7 +302,7 @@ const NewProject = observer(() => {
         onChange={(e) => setPayment(e.target.value)}
       >
         {paymentMethods.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem key={option.value} value={option.label}>
             {option.label}
           </MenuItem>
         ))}
