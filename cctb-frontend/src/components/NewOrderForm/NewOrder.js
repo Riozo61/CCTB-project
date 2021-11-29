@@ -9,7 +9,8 @@ import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
 import { ORDERS_ROUTE } from "../../utils/consts";
 import { observer } from "mobx-react-lite";
-import { createNewOrder } from "../../http/orderAPI";
+// import { createNewOrder } from "../../http/orderAPI";
+import { createNewOrder } from "../../http/axios/orderAPI";
 import { Context } from "../..";
 
 
@@ -196,6 +197,7 @@ const NewOrder = observer(() => {
         variant="outlined"
         margin="normal"
         required
+        type='number'
         value={quantity}
         onChange={(e) => setQuantity(e.target.value)}
       />

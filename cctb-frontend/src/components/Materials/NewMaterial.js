@@ -9,8 +9,10 @@ import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
 import { ORDERS_ROUTE } from "../../utils/consts";
 import { observer } from "mobx-react-lite";
-import { createNewEquipment, createNewMaterial } from "../../http/materialAPI";
+// import { createNewEquipment, createNewMaterial } from "../../http/materialAPI";
 import { Context } from "../..";
+import { createNewMaterial } from "../../http/axios/materialAPI";
+import { createNewEquipment } from "../../http/axios/equipmentAPI";
 
 
 const NewMaterial = observer(() => {
