@@ -6,7 +6,9 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useContext, useState } from "react";
-import { createNewProject } from "../../http/projectAPI";
+// import { createNewProject } from "../../http/projectAPI";
+import { createNewProject } from "../../http/axios/projectAPI";
+
 import { Context } from "../..";
 import { useHistory } from "react-router";
 import { PROJECTS_ROUTE } from "../../utils/consts";
@@ -281,7 +283,7 @@ const NewProject = observer(() => {
       <TextField
         fullWidth={true}
         id="outlined-basic"
-        label={customer === 'company' ? 'Название компании' : 'ФИО'}
+        label={customer === 'Компания' ? 'Название компании' : 'ФИО'}
         variant="outlined"
         margin="normal"
         required

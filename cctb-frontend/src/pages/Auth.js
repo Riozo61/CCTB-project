@@ -6,7 +6,9 @@ import { useContext } from "react";
 import { useState } from "react";
 import { NavLink, useLocation, useHistory } from "react-router-dom";
 import { Context } from "../index";
-import { login, registration } from "../http/userAPI";
+// import { login, registration } from "../http/userAPI";
+import { login, registration } from "../http/axios/userAPI";
+
 import {
   LOGIN_ROUTE,
   PROJECTS_ROUTE,
@@ -81,7 +83,7 @@ const Auth = observer(() => {
         }
       }
     } catch (e) {
-      console.log(e);
+      alert(e.response.data.message);
     }
   };
 
