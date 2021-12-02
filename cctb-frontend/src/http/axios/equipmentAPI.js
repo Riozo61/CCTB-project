@@ -4,7 +4,7 @@ export const createNewEquipment = async (
   type, brand, name, typeObj, serialNumber
 ) => {
   const { data } = await $authHost.post("api/order/newmaterial", {
-    type, brand, name, typeObj, serialNumber
+    type: type, brand: brand, name: name, typeObj: typeObj, serialNumber: serialNumber
   });
   return data;
 };

@@ -4,7 +4,7 @@ export const createNewMaterial = async (
   type, name, supplier, measure, shopName, quantity
 ) => {
   const { data } = await $authHost.post("api/material/newmaterial", {
-    type, name, supplier, measure, shopName, quantity
+    type: type, name: name, supplier: supplier, measure: measure, shopName: shopName, quantity: quantity
   });
   return data;
 };
