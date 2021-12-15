@@ -6,7 +6,7 @@ const ApiError = require('../error/ApiError');
 class OrderController {
     async create(req, res, next) {
             const {orderName,supplier,project,measure,shopName,brand,quantity} = req.body
-            if (!orderName || !project || !supplier || !project || !measure || !quantity ) {
+            if (!orderName || !project || !supplier || !shopName || !measure || !quantity ) {
                 return next(ApiError.badRequest('Заполните обязательные поля'))
             }
             const ord = await Order.Order.findOne({where: {orderName}})
@@ -25,7 +25,7 @@ class OrderController {
         limit = limit || 9
         let offset = page * limit - limit
         let orders;
-        projects = await Order.Order.findAndCountAll({limit, offset})
+        orders = await Order.Order.findAndCountAll({limit, offset})
         return res.json(orders)
        
     }
