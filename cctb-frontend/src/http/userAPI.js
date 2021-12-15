@@ -41,11 +41,10 @@ export const login = async (email, password) => {
 };
 }
 
-export const check = async (email, token) => {
+export const check = async () => {
   const response = await fetch('http://localhost:8080/api/user/auth', {
     method: "GET",
     mode: 'cors',
-    body: {email: email, token: token},
     headers: {
       "Content-Type": "application/json",
     },

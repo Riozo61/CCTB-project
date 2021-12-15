@@ -9,7 +9,8 @@ export const createNewProject = async (
   projManager,
   customer,
   customerName,
-  payment
+  payment,
+  currency
 ) => {
   const response = await fetch("http://localhost:8080/api/project/newproject", {
     method: "POST",
@@ -26,6 +27,7 @@ export const createNewProject = async (
       customer: customer,
       customerName: customerName,
       payment: payment,
+      currency: currency
     }),
     headers: {
       "Content-Type": "application/json",
@@ -40,17 +42,17 @@ export const createNewProject = async (
   }
 };
 
-export const getProjects = async (email, token) => {
-  const response = await fetch("http://localhost:8080/api/projects", {
+export const getProjects = async (limit, page) => {
+  const response = await fetch(`http://localhost:8080/api/project/projects?_limit=${limit}&_page=${page}`,{ 
     method: "GET",
     mode: "cors",
-    body: JSON.stringify({ email: email, token: token }),
     headers: {
       "Content-Type": "application/json",
     },
   });
   if (response.status === 200) {
     const data = await response.json();
+    console.log(data)
     return data;
   } else {
     console.log(response);
