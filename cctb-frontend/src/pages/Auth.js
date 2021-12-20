@@ -94,7 +94,8 @@ const Auth = observer(() => {
 
   return (
     <Container>
-      <Card style={{ width: 600 }}>
+    <Box style={{}}>
+      <Card style={{ width: 600, marginLeft: 'auto', marginRight: 'auto'}}>
         <h2 style={{ marginLeft: 20, marginRight: 20 }}>
           {isLogin ? "Авторизация" : "Регистрация"}
         </h2>
@@ -353,6 +354,7 @@ const Auth = observer(() => {
           )}
         </Box>
       </Card>
+      </Box>
     </Container>
   );
 });

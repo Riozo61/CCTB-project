@@ -134,7 +134,7 @@ const NewProject = observer(() => {
   };
 
   return (
-    <Container style={{ marginLeft: 10, marginRight: 10 }}>
+    <Container style={{ marginLeft: 'auto', marginRight: 'auto' }}>
       <div>
         <h2>Создание нового проекта</h2>
         <TextField

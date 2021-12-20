@@ -106,7 +106,7 @@ const NewOrder = observer(() => {
   };
 
   return (
-    <Container style={{ marginLeft: 10, marginRight: 10 }}>
+    <Container style={{ marginLeft: 'auto', marginRight: 'auto'}}>
       <h2>Создание новой заявки</h2>
       <TextField
         fullWidth={true}

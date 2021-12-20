@@ -27,7 +27,7 @@ export default function OrderTabs() {
   };
 
   return (
-    <Box sx={{ width: "100%", typography: "body1" }}>
+    <Box sx={{ width: "100%", typography: "body1", marginLeft: 'auto', marginRight: 'auto'}}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
@@ -36,7 +36,7 @@ export default function OrderTabs() {
             <Tab label="Склад" value="3" />
           </TabList>
         </Box>
-        <TabPanel value="1">
+        <TabPanel value="1" >
           <List>
             <OrderButtons />
             {order.order?.[0] && <OrderList orders={order.order}/>}

@@ -25,81 +25,10 @@ import AppDrawer from './AppDrawer';
 
 const NavBar =  observer ( () => {
   const {user} = useContext(Context);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
   const logOut = () => {
     user.setUser({})
     user.setIsAuth(false)
   }
-
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
-  const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}><NavLink to={PROFILE_ROUTE}>Profile</NavLink></MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  // const renderMobileMenu = (
-  //   <Menu
-  //     anchorEl={mobileMoreAnchorEl}
-  //     anchorOrigin={{
-  //       vertical: 'top',
-  //       horizontal: 'right',
-  //     }}
-  //     id={mobileMenuId}
-  //     keepMounted
-  //     transformOrigin={{
-  //       vertical: 'top',
-  //       horizontal: 'right',
-  //     }}
-  //     open={isMobileMenuOpen}
-  //     onClose={handleMobileMenuClose}
-  //   >
-  //     <MenuItem>
-  //       <AppDrawer/>
-  //     </MenuItem>
-  //     <MenuItem onClick={handleProfileMenuOpen}>
-        
-  //     </MenuItem>
-  //   </Menu>
-  // );
 
   return ( 
     
@@ -107,24 +36,14 @@ const NavBar =  observer ( () => {
       <AppBar position="static">
       {user.isAuth ?
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-            onClick={() => <AppDrawer open='true'/>}
-          >
-            <MenuIcon />
-          </IconButton>
+        <AppDrawer/>
           <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            <NavLink style={{color: 'white'}} to={PROJECTS_ROUTE}>CONSTRUST|TABLE</NavLink>
-            <NavLink style={{color: 'white', display: 'flex'}} to={ORDERS_ROUTE}>Заказы</NavLink>
+            <NavLink style={{color: 'white', textDecoration: 'none'}} to={PROJECTS_ROUTE}>APPIX</NavLink>
 
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
@@ -141,9 +60,7 @@ const NavBar =  observer ( () => {
               size="large"
               edge="end"
               aria-label="account of current user"
-              aria-controls={menuId}
               aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
               color="inherit"
             >
               <AccountCircle />
@@ -153,9 +70,7 @@ const NavBar =  observer ( () => {
             <IconButton
               size="large"
               aria-label="show more"
-              aria-controls={mobileMenuId}
               aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
               color="inherit"
             >
               <MoreIcon />
@@ -170,6 +85,7 @@ const NavBar =  observer ( () => {
             color="inherit"
             aria-label="open drawer"
             sx={{ mr: 2 }}
+            onClick={() => console.log('clicked')}
           >
             <MenuIcon />
           </IconButton>
@@ -181,14 +97,13 @@ const NavBar =  observer ( () => {
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
           
-            <NavLink style={{color: 'white'}} to={REGISTRATION_ROUTE}>CONSTRUST|TABLE</NavLink>
+            <NavLink style={{color: 'white'}} to={REGISTRATION_ROUTE}>APPIX</NavLink>
           </Typography>
           </Toolbar>
         
       }
       </AppBar>
-      {/* {renderMobileMenu} */}
-      {renderMenu}
+
     </Box>
   );
 }

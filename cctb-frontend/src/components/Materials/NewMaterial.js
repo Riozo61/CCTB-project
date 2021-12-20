@@ -144,9 +144,9 @@ const NewMaterial = observer(() => {
   };
 
   return (
-    <Container style={{ marginLeft: 10, marginRight: 10 }}>
+    <Container style={{ marginLeft: 'auto', marginRight: 'auto' }}>
       <h2>Создание новой заявки на материал/оборудование</h2>
-
+    
       <TextField
         variant="outlined"
         margin="normal"
