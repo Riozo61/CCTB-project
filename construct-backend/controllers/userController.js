@@ -48,6 +48,17 @@ class UserController {
         return res.json({token})
     }
 
+    async getAll(req, res) {
+        let {limit, page} = req.query
+        page = page || 1
+        limit = limit || 9
+        let offset = page * limit - limit
+        let  users;
+        users = await User.User.findAndCountAll({limit, offset})
+        return res.json(users)
+       
+    }
+
 }
 
 module.exports = new UserController()
