@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useContext, useEffect } from 'react'
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
@@ -9,8 +9,17 @@ import OrderButtons from "../OrderButtons/OrderButtons";
 import OrderList from "../OrderList/OrderList";
 import MaterialButtons from "../Materials/MaterialButtons";
 import MaterialsList from "../Materials/MaterialsList";
+import { Context } from '../..';
+import { getOrders } from '../../http/axios/orderAPI';
+import { getMaterials } from '../../http/axios/materialAPI';
 
-export default function OrderTabs({orders}) {
+export default function OrderTabs() {
+  const {order} = useContext(Context)
+  const {material} = useContext(Context)
+  useEffect(() => {
+    getOrders().then(data => {order.setOrder(data.rows)});
+    getMaterials().then(data => {material.setMaterial(data.rows)})
+  }, [])
   const [value, setValue] = React.useState("1");
 
   const handleChange = (event, newValue) => {
@@ -18,7 +27,7 @@ export default function OrderTabs({orders}) {
   };
 
   return (
-    <Box sx={{ width: "100%", typography: "body1" }}>
+    <Box sx={{ width: "100%", typography: "body1", marginLeft: 'auto', marginRight: 'auto'}}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
@@ -27,15 +36,15 @@ export default function OrderTabs({orders}) {
             <Tab label="Склад" value="3" />
           </TabList>
         </Box>
-        <TabPanel value="1">
+        <TabPanel value="1" >
           <List>
             <OrderButtons />
-            {orders.order?.[0] && <OrderList order={orders.order}/>}
+            {order.order?.[0] && <OrderList orders={order.order}/>}
           </List>
         </TabPanel>
         <TabPanel value="2">
           <MaterialButtons/>
-          <MaterialsList/>
+          {material.material?.[0] && <MaterialsList materials={material.material}/>}
         </TabPanel>
         <TabPanel value="3"></TabPanel>
       </TabContext>

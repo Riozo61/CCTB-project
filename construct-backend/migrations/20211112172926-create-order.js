@@ -20,7 +20,7 @@ module.exports = {
       measure: {
         type: Sequelize.STRING
       },
-      shopname: {
+      shopName: {
         type: Sequelize.STRING
       },
       brand: {

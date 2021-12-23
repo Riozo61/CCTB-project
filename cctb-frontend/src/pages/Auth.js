@@ -6,12 +6,15 @@ import { useContext } from "react";
 import { useState } from "react";
 import { NavLink, useLocation, useHistory } from "react-router-dom";
 import { Context } from "../index";
-import { login, registration } from "../http/userAPI";
+// import { login, registration } from "../http/userAPI";
+import { login, registration } from "../http/axios/userAPI";
+
 import {
   LOGIN_ROUTE,
   PROJECTS_ROUTE,
   REGISTRATION_ROUTE,
 } from "../utils/consts";
+import useInput from "../components/Validations/Hooks/useInput";
 
 const Auth = observer(() => {
   const { user } = useContext(Context);
@@ -19,12 +22,16 @@ const Auth = observer(() => {
   const history = useHistory();
 
   const isLogin = location.pathname === LOGIN_ROUTE;
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [role, setRole] = useState("");
-  const [company, setCompany] = useState("");
+  const email = useInput("", { isEmpty: true, minLength: 5, isEmail: true });
+  const password = useInput("", { isEmpty: true, minLength: 6, maxLength: 20 });
+  const firstName = useInput("", {
+    isEmpty: true,
+    minLength: 2,
+    maxLength: 20,
+  });
+  const lastName = useInput("", { isEmpty: true, minLength: 2, maxLength: 20 });
+  const role = useInput("", { isEmpty: true, minLength: 2});
+  const company = useInput("", { isEmpty: true, minLength: 2, maxLength: 25 });
   const roles = [
     {
       value: "manager",
@@ -45,11 +52,11 @@ const Auth = observer(() => {
       let data;
 
       if (isLogin) {
-        data = await login(email, password);
+        data = await login(email.value, password.value);
         user.setUser({
-          role: role,
-          email: email,
-          token: data.token,
+          email: email.value,
+          password: password.value,
+          token: data.token
         });
         if (data) {
           user.setToken(data.token);
@@ -58,21 +65,21 @@ const Auth = observer(() => {
         }
       } else {
         data = await registration(
-          email,
-          password,
-          role,
-          firstName,
-          lastName,
-          company
+          email.value,
+          password.value,
+          firstName.value,
+          lastName.value,
+          company.value,
+          role.value
         );
         console.log(data);
         user.setUser({
-          role: role,
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          password: password,
-          company: company,
+          firstName: firstName.value,
+          lastName: lastName.value,
+          email: email.value,
+          role: role.value,
+          password: password.value,
+          company: company.value,
         });
         if (data) {
           user.setToken(data.token);
@@ -81,13 +88,14 @@ const Auth = observer(() => {
         }
       }
     } catch (e) {
-      console.log(e);
+      alert(e.response.data.message);
     }
   };
 
   return (
     <Container>
-      <Card style={{ width: 600}}>
+    <Box style={{}}>
+      <Card style={{ width: 600, marginLeft: 'auto', marginRight: 'auto'}}>
         <h2 style={{ marginLeft: 20, marginRight: 20 }}>
           {isLogin ? "Авторизация" : "Регистрация"}
         </h2>
@@ -103,10 +111,20 @@ const Auth = observer(() => {
                 label="Электронная почта"
                 name="email"
                 autoComplete="email"
-                autoFocus
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={email.value}
+                onChange={(e) => email.onChange(e)}
+                onBlur={(e) => email.onBlur(e)}
               />
+              {email.isDirty && email.isEmpty && (
+                <div style={{ color: "red" }}>Поле не может быть пустым</div>
+              )}
+              {email.isDirty && email.minLengthError && (
+                <div style={{ color: "red" }}>Некорректная длина</div>
+              )}
+              {email.isDirty && email.emaiError && (
+                <div style={{ color: "red" }}>Некорректный email</div>
+              )}
+
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -117,9 +135,19 @@ const Auth = observer(() => {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={password.value}
+                onChange={(e) => password.onChange(e)}
+                onBlur={(e) => password.onBlur(e)}
               />
+              {password.isDirty && password.isEmpty && (
+                <div style={{ color: "red" }}>Поле не может быть пустым</div>
+              )}
+              {password.isDirty && password.minLengthError && (
+                <div style={{ color: "red" }}>Некорректная длина</div>
+              )}
+              {password.isDirty && password.maxLengthError && (
+                <div style={{ color: "red" }}>Слишком длинный пароль</div>
+              )}
 
               <Button
                 type="submit"
@@ -129,6 +157,7 @@ const Auth = observer(() => {
                 className="submit"
                 onClick={click}
                 style={{ marginTop: 15 }}
+                disabled={!email.inputValid || !password.inputValid}
               >
                 Войти
               </Button>
@@ -144,10 +173,18 @@ const Auth = observer(() => {
                 label="Имя"
                 name="firstName"
                 autoComplete="firstName"
-                autoFocus
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                value={firstName.value}
+                onChange={(e) => firstName.onChange(e)}
+                onBlur={(e) => firstName.onBlur(e)}
+
               />
+              {firstName.isDirty && firstName.isEmpty && (
+                <div style={{ color: "red" }}>Поле не может быть пустым</div>
+              )}
+              {firstName.isDirty && firstName.minLengthError && (
+                <div style={{ color: "red" }}>Слишком короткое имя</div>
+              )}
+
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -157,9 +194,18 @@ const Auth = observer(() => {
                 label="Фамилия"
                 name="lastName"
                 autoComplete="lastName"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                value={lastName.value}
+                onChange={(e) => lastName.onChange(e)}
+                onBlur={(e) => lastName.onBlur(e)}
+
               />
+              {lastName.isDirty && lastName.isEmpty && (
+                <div style={{ color: "red" }}>Поле не может быть пустым</div>
+              )}
+              {lastName.isDirty && lastName.minLengthError && (
+                <div style={{ color: "red" }}>Слишком короткая фамилия</div>
+              )}
+
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -169,9 +215,20 @@ const Auth = observer(() => {
                 label="Электронная почта"
                 name="email"
                 autoComplete="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={email.value}
+                onChange={(e) => email.onChange(e)}
+                onBlur={(e) => email.onBlur(e)}
               />
+              {email.isDirty && email.isEmpty && (
+                <div style={{ color: "red" }}>Поле не может быть пустым</div>
+              )}
+              {email.isDirty && email.minLengthError && (
+                <div style={{ color: "red" }}>Некорректная длина</div>
+              )}
+              {email.isDirty && email.emaiError && (
+                <div style={{ color: "red" }}>Некорректный email</div>
+              )}
+
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -182,8 +239,10 @@ const Auth = observer(() => {
                 label="Роль"
                 name="role"
                 autoComplete="role"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
+                value={role.value}
+                onChange={(e) => role.onChange(e)}
+                onBlur={(e) => role.onBlur(e)}
+
               >
                 {roles.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -191,6 +250,10 @@ const Auth = observer(() => {
                   </MenuItem>
                 ))}
               </TextField>
+              {role.isDirty && role.isEmpty && (
+                <div style={{ color: "red" }}>Поле не может быть пустым</div>
+              )}
+
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -200,9 +263,20 @@ const Auth = observer(() => {
                 label="Пароль"
                 type="password"
                 id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={password.value}
+                onChange={(e) => password.onChange(e)}
+                onBlur={(e) => password.onBlur(e)}
               />
+              {password.isDirty && password.isEmpty && (
+                <div style={{ color: "red" }}>Поле не может быть пустым</div>
+              )}
+              {password.isDirty && password.minLengthError && (
+                <div style={{ color: "red" }}>Некорректная длина</div>
+              )}
+              {password.isDirty && password.maxLengthError && (
+                <div style={{ color: "red" }}>Слишком длинный пароль</div>
+              )}
+
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -212,9 +286,18 @@ const Auth = observer(() => {
                 label="Название компании"
                 name="company"
                 autoComplete="company"
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
+                value={company.value}
+                onChange={(e) => company.onChange(e)}
+                onBlur={(e) => company.onBlur(e)}
+
               />
+                {company.isDirty && company.isEmpty && (
+                <div style={{ color: "red" }}>Поле не может быть пустым</div>
+              )}
+              {company.isDirty && company.minLengthError && (
+                <div style={{ color: "red" }}>Слишком короткое название компании</div>
+              )}
+
 
               <Button
                 type="submit"
@@ -224,6 +307,7 @@ const Auth = observer(() => {
                 className="submit"
                 onClick={click}
                 style={{ marginTop: 15 }}
+                disabled={!email.inputValid || !password.inputValid || !firstName.inputValid || !lastName.inputValid || !role.inputValid || !company.inputValid}
               >
                 Регистрация
               </Button>
@@ -270,6 +354,7 @@ const Auth = observer(() => {
           )}
         </Box>
       </Card>
+      </Box>
     </Container>
   );
 });

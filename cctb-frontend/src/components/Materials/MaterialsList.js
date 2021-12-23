@@ -1,9 +1,12 @@
 import React from 'react'
+import MaterialItem from './MaterialItem'
 
-const MaterialsList = () => {
+const MaterialsList = ({materials}) => {
   return (
     <div>
-      Список материалов
+      {materials.map((mat) => (
+        <MaterialItem key={mat.id} material={mat} />
+      ))}
     </div>
   )
 }
