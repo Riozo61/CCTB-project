@@ -11,6 +11,7 @@ import useInput from "../Validations/Hooks/useInput";
 
 const NewMaterial = observer(() => {
   const { material } = useContext(Context);
+  const {equipment} = useContext(Context);
   const history = useHistory("");
 
   const type = useInput("", { isEmpty: true, minLength: 2, maxLength: 30 });
@@ -124,7 +125,7 @@ const NewMaterial = observer(() => {
           typeObj.value,
           serialNumber.value
         );
-        material.setMaterial({
+        equipment.setEquipment({
           type: type.value,
           name: name.value,
           brand: brand.value,
@@ -333,7 +334,7 @@ const NewMaterial = observer(() => {
               !quantity.inputValid
             }
           >
-            Создать заявку
+            Добавить материал
           </Button>
         </div>
       ) : (
@@ -390,11 +391,10 @@ const NewMaterial = observer(() => {
             fullWidth={false}
             id="outlined-select-currency"
             label="Бренд"
-            name="measure"
-            autoComplete="measure"
-            value={measure.value}
-            onChange={(e) => measure.onChange(e)}
-            onBlur={(e) => measure.onBlur(e)}
+            name="Brand"
+            value={brand.value}
+            onChange={(e) => brand.onChange(e)}
+            onBlur={(e) => brand.onBlur(e)}
           >
             {brandsEq.map((option) => (
               <MenuItem key={option.value} value={option.label}>
@@ -402,7 +402,7 @@ const NewMaterial = observer(() => {
               </MenuItem>
             ))}
           </TextField>
-          {measure.isDirty && measure.isEmpty && (
+          {brand.isDirty && brand.isEmpty && (
             <div style={{ color: "red" }}>Поле не может быть пустым</div>
           )}
 
@@ -443,7 +443,7 @@ const NewMaterial = observer(() => {
           !serialNumber.inputValid
         }
       >
-        Создать заявку
+        Добавить оборудование
       </Button>
         </div>
       )}
