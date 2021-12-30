@@ -7,6 +7,7 @@ const materialsRouter = require('./materialsRouter')
 const equipmentRouter = require('./equipmentRouter')
 const employeeRouter = require('./employeeRouter')
 const othersRouter = require('./othersRouter')
+const costRouter = require('./costRouter')
 
 router.use('/user', userRouter)
 router.use('/project', projectRouter)
@@ -16,5 +17,7 @@ router.use('/equipment', equipmentRouter)
 
 router.use('/employee', employeeRouter)
 router.use('/others', othersRouter)
+router.use('/cost', costRouter)
+
 
 module.exports = router
