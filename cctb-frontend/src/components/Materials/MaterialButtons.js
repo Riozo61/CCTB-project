@@ -13,7 +13,7 @@ const MaterialButtons = () => {
         color="success"
       >
       <NavLink to={NEW_MATERIAL_ROUTE} style={{textDecoration: 'none', color: 'white'}}>
-        Создать заявку на материал/оборудование
+        Добавить материал/оборудование
       </NavLink>
       </Button>
     </div>
@@ -24,7 +24,7 @@ const MaterialButtons = () => {
         color="error"
         disabled={false}
       >
-        Удалить заявку
+        Удалить материал/оборудование
       </Button>
     </div>
   </Stack>

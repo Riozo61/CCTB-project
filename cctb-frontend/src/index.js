@@ -8,6 +8,11 @@ import UserStore from './store/UserStore';
 import OrderStore from './store/OrderStore';
 import ProjectStore from './store/ProjectStore';
 import MaterialStore from './store/MaterialStore';
+import MemberStore from './store/MemberStore';
+import EquipmentlStore from './store/EquipmentStore';
+import OtherMemberStore from './store/OtherMemberStore';
+import CostStore from './store/CostStore';
+
 
 export const Context = createContext(null);
 console.log(process.env.REACT_APP_API_URL)
@@ -19,6 +24,10 @@ ReactDOM.render(
     order: new OrderStore(),
     project: new ProjectStore(),
     material: new MaterialStore(),
+    member: new MemberStore(),
+    equipment: new EquipmentlStore(),
+    otherMember: new OtherMemberStore(),
+    cost: new CostStore(),
 
   }}>
     <App />

@@ -12,13 +12,17 @@ import MaterialsList from "../Materials/MaterialsList";
 import { Context } from '../..';
 import { getOrders } from '../../http/axios/orderAPI';
 import { getMaterials } from '../../http/axios/materialAPI';
+import { getEquipment } from '../../http/axios/equipmentAPI';
+import EquipmentList from '../Equipment/EquipmentList';
 
 export default function OrderTabs() {
   const {order} = useContext(Context)
   const {material} = useContext(Context)
+  const {equipment} =useContext(Context)
   useEffect(() => {
     getOrders().then(data => {order.setOrder(data.rows)});
-    getMaterials().then(data => {material.setMaterial(data.rows)})
+    getMaterials().then(data => {material.setMaterial(data.rows)});
+    getEquipment().then(data => {equipment.setEquipment(data.rows)})
   }, [])
   const [value, setValue] = React.useState("1");
 
@@ -32,8 +36,7 @@ export default function OrderTabs() {
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
             <Tab label="Закупки/заявки" value="1" />
-            <Tab label="Материалы/оборудование" value="2" />
-            <Tab label="Склад" value="3" />
+            <Tab label="Склад" value="2" />
           </TabList>
         </Box>
         <TabPanel value="1" >
@@ -44,9 +47,11 @@ export default function OrderTabs() {
         </TabPanel>
         <TabPanel value="2">
           <MaterialButtons/>
+          <h2>Материалы</h2>
           {material.material?.[0] && <MaterialsList materials={material.material}/>}
+          <h2>Оборудование</h2>
+          {equipment.equipment?.[0] && <EquipmentList equipments={equipment.equipment}/>}
         </TabPanel>
-        <TabPanel value="3"></TabPanel>
       </TabContext>
     </Box>
   );
