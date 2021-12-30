@@ -94,7 +94,7 @@ const NewMember = observer(() => {
           phone.value,
           type.value
         );
-        otherMember.setMember({
+        otherMember.setOtherMember({
           email: email.value,
           firstName: firstName.value,
           lastName: lastName.value,

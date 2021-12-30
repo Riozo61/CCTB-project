@@ -12,7 +12,6 @@ const OrderItem = observer(({order}) => {
     <ListItemButton
       onClick={() => history.push(ORDERPAGE_ROUTE + "/" + order.id)}
     >
-      <Checkbox checked={order.checked} />
       <ListItemText primary={order.orderName} secondary="Название заявки" />
       <ListItemText primary={order.supplier} secondary="Поставщик" />
       <ListItemText primary={order.project} secondary="Проект" />   

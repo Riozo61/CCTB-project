@@ -1,3 +1,4 @@
+import NewCosts from "./components/Costs/NewCosts";
 import NewMaterial from "./components/Materials/NewMaterial";
 import NewOrder from "./components/NewOrderForm/NewOrder";
 import NewMember from "./components/Team/NewMember";
@@ -80,7 +81,7 @@ export const authRoutes = [
   },
   {
     path: NEW_COSTS_ROUTE,
-    Component: Costs
+    Component: NewCosts
   },
 
 ];
