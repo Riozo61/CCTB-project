@@ -22,7 +22,7 @@ class EmployeeController {
     async getAll(req, res) {
         let {limit, page} = req.query
         page = page || 1
-        limit = limit || 9
+        limit = limit || 50
         let offset = page * limit - limit
         let Employees;
         Employees = await Employee.Employee.findAndCountAll({limit, offset})

@@ -55,7 +55,8 @@ const Team = observer(() => {
   const partner = [];
   const subcontractor = [];
   const supplier = [];
-
+  
+if (otherMember.otherMember[0]){
   otherMember.otherMember.forEach((element) => {
     if (element.type === "Заказчик") {
 
@@ -71,19 +72,24 @@ const Team = observer(() => {
       supplier.push(element);
     }
   });
-  member.member.map((e) => {
-    return members.push(e);
-  });
+}
+  if (member.member[0]){
+    member.member.forEach((e) => {
+        members.push(e);
+    }
+    );
+  }
+  
   return (
     <div>
     <TeamButtons />
     <Box style={{width: 1000, marginLeft: "auto", marginRight: 'auto'}}>
-        {member?.[0] && (
+        {members?.[0] && (
           <div>
             <h2>Сотрудники</h2>
             <div style={{ height: 400, width: "100%" }}>
               <DataGrid
-                rows={member}
+                rows={members}
                 columns={columnsMember}
                 pageSize={20}
                 rowsPerPageOptions={[20]}
@@ -91,7 +97,7 @@ const Team = observer(() => {
             </div>
           </div>
         )}
-        {/* <TeamList members={member.member} /> */}
+
 
         {customer?.[0] && (
           <div>
@@ -107,8 +113,7 @@ const Team = observer(() => {
           </div>
         )}
 
-        {/* <OtherMemberList otherMembers={e.otherMember} />;
-          })} */}
+
 
         {partner?.[0] && (
           <div>
@@ -123,9 +128,7 @@ const Team = observer(() => {
             </div>
           </div>
         )}
-        {/* && partner.otherMember.map((e) => {
-          <OtherMemberList otherMembers={e.otherMember} />
-        })} */}
+
 
         {subcontractor?.[0] && (
           <div>
@@ -142,9 +145,6 @@ const Team = observer(() => {
           </div>
         )}
 
-        {/* && <h2>Субподрядчики</h2> && subcontractor.otherMember.map((e) => {
-          <OtherMemberList otherMembers={e.otherMember} />
-        })} */}
 
         {supplier?.[0] && (
           <div>
@@ -161,9 +161,6 @@ const Team = observer(() => {
           </div>
         )}
 
-        {/* && supplier.otherMember.map((e) => {
-          <OtherMemberList otherMembers={e.otherMember} />
-        })} */}
     </Box>
     </div>
   );

@@ -1,7 +1,14 @@
 import { $authHost } from "./index";
 
 export const createNewEmployee = async (
-  email, firstName, lastName, role, phone, salary, type
+  email,
+  firstName,
+  lastName,
+  role,
+  phone,
+  salary,
+  currency,
+  type
 ) => {
   const { data } = await $authHost.post("api/employee/newemployee", {
     email: email,
@@ -10,7 +17,8 @@ export const createNewEmployee = async (
     role: role,
     phone: phone,
     salary: salary,
-    type: type
+    currency: currency,
+    type: type,
   });
   return data;
 };
@@ -23,14 +31,18 @@ export const getEmployee = async (limit, page) => {
 };
 
 export const createOtherMember = async (
-  email, firstName, lastName, phone, type
+  email,
+  firstName,
+  lastName,
+  phone,
+  type
 ) => {
   const { data } = await $authHost.post("api/others/newother", {
     email: email,
     firstName: firstName,
     lastName: lastName,
     phone: phone,
-    type: type
+    type: type,
   });
   return data;
 };

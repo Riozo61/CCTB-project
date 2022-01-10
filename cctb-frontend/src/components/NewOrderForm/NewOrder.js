@@ -7,26 +7,50 @@ import { observer } from "mobx-react-lite";
 import { createNewOrder } from "../../http/axios/orderAPI";
 import { Context } from "../..";
 import useInput from "../Validations/Hooks/useInput";
+import { useEffect } from "react";
+import { getProjects } from "../../http/axios/projectAPI";
+import { getOtherMember } from "../../http/axios/teamAPI";
 
 const NewOrder = observer(() => {
   const { order } = useContext(Context);
   const history = useHistory("");
+  const {project} = useContext(Context)
+  const {otherMember} = useContext(Context);
 
+  useEffect(() => {
+    getProjects().then(data => {project.setProject(data.rows)});
+    getOtherMember().then(data => {otherMember.setOtherMember(data.rows)})
+  }, [])
+  const projects = [];
+  const suppliers = [];
+  if (otherMember.otherMember[0]){
+    otherMember.otherMember.forEach((element) => {
+      if (element.type === "Поставщик") {
+        suppliers.push(element);
+      }
+    });
+  }
+  
+
+  if (project.project[0]){
+    project.project.forEach((e) => {
+      projects.push(e);
+    }
+    );
+  }
   const orderName = useInput("", {
     isEmpty: true,
     minLength: 2,
-    maxLength: 30,
   });
   const supplier = useInput("", { isEmpty: true });
-  const project = useInput("", { isEmpty: true, minLength: 2, maxLength: 30 });
+  const projectName = useInput("", { isEmpty: true, minLength: 1});
   const measure = useInput("", { isEmpty: true });
   const [photo, setPhoto] = useState("");
-  const shopName = useInput("", { isEmpty: true, minLength: 2, maxLength: 30 });
+  const shopName = useInput("", { isEmpty: true, minLength: 1});
   const brand = useInput("", { isEmpty: true });
   const quantity = useInput("", {
     isEmpty: true,
     minValue: 0,
-    maxValue: 100000,
   });
 
   const brands = [
@@ -51,14 +75,7 @@ const NewOrder = observer(() => {
       label: "Бренд 5",
     },
   ];
-  const suppliers = [
-    { value: "supplier1", label: "Поставщик 1" },
-    { value: "supplier2", label: "Поставщик 2" },
-  ];
-  const projects = [
-    { value: "project1", label: "Проект 1" },
-    { value: "project2", label: "Проект 2" },
-  ];
+
   const measures = [
     { value: "number", label: "шт" },
     { value: "gram", label: "г" },
@@ -75,7 +92,7 @@ const NewOrder = observer(() => {
       data = await createNewOrder(
         orderName.value,
         supplier.value,
-        project.value,
+        projectName.value,
         measure.value,
         photo,
         shopName.value,
@@ -86,7 +103,7 @@ const NewOrder = observer(() => {
       order.setOrder({
         orderName: orderName.value,
         supplier: supplier.value,
-        project: project.value,
+        project: projectName.value,
         measure: measure.value,
         photo: photo.value,
         shopName: shopName.value,
@@ -125,9 +142,6 @@ const NewOrder = observer(() => {
       {orderName.isDirty && orderName.minLengthError && (
         <div style={{ color: "red" }}>Слишком короткое название</div>
       )}
-      {orderName.isDirty && orderName.maxLengthError && (
-        <div style={{ color: "red" }}>Слишком длинное название</div>
-      )}
 
       <TextField
         variant="outlined"
@@ -139,24 +153,21 @@ const NewOrder = observer(() => {
         label="Название проекта"
         name="status"
         autoComplete="status"
-        value={project.value}
-        onChange={(e) => project.onChange(e)}
-        onBlur={(e) => project.onBlur(e)}
+        value={projectName.value}
+        onChange={(e) => projectName.onChange(e)}
+        onBlur={(e) => projectName.onBlur(e)}
       >
         {projects.map((option) => (
-          <MenuItem key={option.value} value={option.label}>
-            {option.label}
+          <MenuItem key={option.id} value={option.projectName}>
+            {option.projectName}
           </MenuItem>
         ))}
       </TextField>
-      {project.isDirty && project.isEmpty && (
+      {projectName.isDirty && projectName.isEmpty && (
         <div style={{ color: "red" }}>Поле не может быть пустым</div>
       )}
-      {project.isDirty && project.minLengthError && (
+      {projectName.isDirty && projectName.minLengthError && (
         <div style={{ color: "red" }}>Слишком короткое название</div>
-      )}
-      {project.isDirty && project.maxLengthError && (
-        <div style={{ color: "red" }}>Слишком длинное название</div>
       )}
 
       <TextField
@@ -193,13 +204,13 @@ const NewOrder = observer(() => {
         label="Поставщик"
         name="supplier"
         autoComplete="supplier"
-        value={supplier.value}
+        value={`${supplier.firstName} ${supplier.lastName}`}
         onChange={(e) => supplier.onChange(e)}
         onBlur={(e) => supplier.onBlur(e)}
       >
         {suppliers.map((option) => (
-          <MenuItem key={option.value} value={option.label}>
-            {option.label}
+          <MenuItem key={option.id} value={`${option.firstName} ${option.lastName}`}>
+            {`${option.firstName} ${option.lastName}`}
           </MenuItem>
         ))}
       </TextField>
@@ -225,9 +236,6 @@ const NewOrder = observer(() => {
       )}
       {shopName.isDirty && shopName.minLengthError && (
         <div style={{ color: "red" }}>Слишком короткое название</div>
-      )}
-      {shopName.isDirty && shopName.maxLengthError && (
-        <div style={{ color: "red" }}>Слишком длинное название</div>
       )}
 
       <div>
@@ -278,9 +286,6 @@ const NewOrder = observer(() => {
             Значение не может быть отрицательным или равно 0
           </div>
         )}
-        {quantity.isDirty && quantity.maxValueError && (
-          <div style={{ color: "red" }}>Слишком большое значение</div>
-        )}
       </div>
       <input
         accept="image/*"
@@ -308,7 +313,7 @@ const NewOrder = observer(() => {
         disabled={
           !orderName.inputValid ||
           !supplier.inputValid ||
-          !project.inputValid ||
+          !projectName.inputValid ||
           !measure.inputValid ||
           !shopName.inputValid ||
           !brand.inputValid ||

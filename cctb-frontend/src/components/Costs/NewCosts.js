@@ -15,13 +15,17 @@ const NewCosts = observer(() => {
   const estimation = useInput("", {
     isEmpty: true,
     minValue: 0,
-    maxValue: 100000,
   });
+  const currency = useInput("", { isEmpty: true });
   const description = useInput("", {
     isEmpty: true,
-    minLength: 2,
-    maxLength: 256,
+    minLength: 1,
   });
+  const currencies = [
+    { value: "$", label: "$" },
+    { value: "€", label: "€" },
+    { value: "₽", label: "₽" },
+  ];
 
   const types = [
     {
@@ -93,31 +97,48 @@ const NewCosts = observer(() => {
       {type.isDirty && type.isEmpty && (
           <div style={{ color: "red" }}>Поле не может быть пустым</div>
         )}
-      <TextField
-        fullWidth={true}
-        style={{ marginRight: 10 }}
-        id="outlined-basic"
-        label="Расчет"
-        variant="outlined"
-        margin="normal"
-        type="number"
-        required
-        value={estimation.value}
-        onChange={(e) => estimation.onChange(e)}
-        onBlur={(e) => estimation.onBlur(e)}
-      />
-                {estimation.isDirty && estimation.isEmpty && (
+        <TextField
+            label="Расчет"
+            fullWidth={false}
+            variant="outlined"
+            margin="normal"
+            required
+            name="numberformat"
+            id="formatted-numberformat-input"
+            type="number"
+            value={estimation.value}
+            onChange={(e) => estimation.onChange(e)}
+            onBlur={(e) => estimation.onBlur(e)}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            select
+            style={{ width: 150, marginLeft: 10 }}
+            id="outlined-select-currency"
+            label="Валюта"
+            name="status"
+            autoComplete="status"
+            value={currency.value}
+            onChange={(e) => currency.onChange(e)}
+            onBlur={(e) => currency.onBlur(e)}
+          >
+            {currencies.map((option) => (
+              <MenuItem key={option.value} value={option.label}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          {((estimation.isDirty && estimation.isEmpty) || (currency.isDirty && currency.isEmpty)) && (
             <div style={{ color: "red" }}>Поле не может быть пустым</div>
           )}
+
           {estimation.isDirty && estimation.minValueError && (
             <div style={{ color: "red" }}>
               Значение не может быть отрицательным или равно 0
             </div>
           )}
-          {estimation.isDirty && estimation.maxValueError && (
-            <div style={{ color: "red" }}>Слишком большое значение</div>
-          )}
-
       <TextField
         fullWidth={true}
         style={{ marginRight: 10 }}
@@ -132,9 +153,6 @@ const NewCosts = observer(() => {
       />
                 {description.isDirty && description.isEmpty && (
             <div style={{ color: "red" }}>Поле не может быть пустым</div>
-          )}
-          {description.isDirty && description.maxValueError && (
-            <div style={{ color: "red" }}>Слишком длинное описание</div>
           )}
 
       <Button

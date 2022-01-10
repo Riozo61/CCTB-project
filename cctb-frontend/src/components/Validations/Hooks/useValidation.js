@@ -12,37 +12,48 @@ const useValidation = (value, validations) => {
   useEffect(() => {
     for (const validation in validations) {
       switch (validation) {
-        case 'minLength': 
-          value.length < validations[validation] ? setMinLengthError(true) : setMinLengthError(false)
+        case "minLength":
+          value.length < validations[validation]
+            ? setMinLengthError(true)
+            : setMinLengthError(false);
           break;
-        case 'isEmpty':
-          value ? setEmpty(false) : setEmpty(true)
+        case "isEmpty":
+          value ? setEmpty(false) : setEmpty(true);
           break;
-        case 'maxLenght':
-          value.length > validations[validation] ? setMaxLengthError(true) : setMaxLengthError(false)
+        case "maxLenght":
+          value.length > validations[validation]
+            ? setMaxLengthError(true)
+            : setMaxLengthError(false);
 
-        break;
-        case 'isEmail':
+          break;
+        case "isEmail":
           const re =
-          /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-          re.test(String(value).toLowerCase()) ? setEmailError(false) : setEmailError(true)
-        break;
-        case 'minValue':
-          value <= validations[validation] ? setMinValueError(true) : setMinValueError(false);
-        case 'maxValue':
-          value >= validations[validation] ? setMaxValueError(true) : setMaxValueError(false);
+            /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+          re.test(String(value).toLowerCase())
+            ? setEmailError(false)
+            : setEmailError(true);
+          break;
+        case "minValue":
+          value <= validations[validation]
+            ? setMinValueError(true)
+            : setMinValueError(false);
+          break;
+        case "maxValue":
+          value >= validations[validation]
+            ? setMaxValueError(true)
+            : setMaxValueError(false);
+          break;
       }
     }
   }, [value]);
 
   useEffect(() => {
     if (isEmpty || maxLengthError || emaiError) {
-      setInputValid(false)
+      setInputValid(false);
     } else {
-      setInputValid(true)
+      setInputValid(true);
     }
-
-  }, [isEmpty, maxLengthError, minLengthError, emaiError])
+  }, [isEmpty, maxLengthError, minLengthError, emaiError]);
   return {
     isEmpty,
     minLengthError,
@@ -50,7 +61,7 @@ const useValidation = (value, validations) => {
     emaiError,
     inputValid,
     minValueError,
-    maxValueError
+    maxValueError,
   };
 };
 

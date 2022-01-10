@@ -22,7 +22,7 @@ const MaterialButtons = () => {
           color="success"
           onClick={() => history.push(NEW_MATERIAL_ROUTE)}
         >
-          Добавить материал/оборудование
+          Добавить
         </Button>
 
 
