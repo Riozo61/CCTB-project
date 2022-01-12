@@ -9,6 +9,9 @@ export default class ProjectStore {
   setProject(project) {
     this._project = project
   };
+  clearProject() {
+    this._project = [];
+  }
 
   get project() {
     return this._project

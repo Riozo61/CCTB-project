@@ -6,8 +6,10 @@ import { Container, MenuItem, TextField } from "@mui/material";
 import { createNewEmployee } from "../../http/axios/teamAPI";
 import { Context } from "../..";
 import { observer } from "mobx-react-lite";
+import useInputPhone from "../Validations/Hooks/useInputPhone";
+import MuiPhoneNumber from "material-ui-phone-number";
 
-const ProjectPopover = observer((addNewMember) => {
+const ProjectPopover = observer(() => {
   const { member } = useContext(Context);
   const email = useInput("", { isEmpty: true, minLength: 3, isEmail: true });
   const firstName = useInput("", {
@@ -17,7 +19,7 @@ const ProjectPopover = observer((addNewMember) => {
   const lastName = useInput("", { isEmpty: true, minLength: 1 });
   const role = useInput("", { isEmpty: true, minLength: 1 });
   const type = "Сотрудник";
-  const phone = useInput("", { isEmpty: true, minLength: 9 });
+  const phone = useInputPhone('', {isEmpty: true})
   const salary = useInput("", {
     isEmpty: true,
     minValue: 0,
@@ -65,7 +67,7 @@ const ProjectPopover = observer((addNewMember) => {
         currency.value,
         type
       );
-      member.setMember({
+      member.addMember({
         email: email.value,
         firstName: firstName.value,
         lastName: lastName.value,
@@ -77,7 +79,6 @@ const ProjectPopover = observer((addNewMember) => {
       });
       if (data) {
         handleClose();
-        addNewMember(data)
         
       } else {
         console.log(data);
@@ -94,7 +95,7 @@ const ProjectPopover = observer((addNewMember) => {
 
   return (
     <div>
-      <Button aria-describedby={id} variant="contained" onClick={handleClick}>
+      <Button aria-describedby={id} variant="outlined" onClick={handleClick}>
         Создать
       </Button>
       <Popover
@@ -163,7 +164,7 @@ const ProjectPopover = observer((addNewMember) => {
             onBlur={(e) => role.onBlur(e)}
           >
             {roles.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
+              <MenuItem key={option.value} value={option.label}>
                 {option.label}
               </MenuItem>
             ))}
@@ -194,27 +195,18 @@ const ProjectPopover = observer((addNewMember) => {
           {email.isDirty && email.emaiError && (
             <div style={{ color: "red" }}>Некорректный email</div>
           )}
-          <TextField
+          <MuiPhoneNumber
             fullWidth={false}
-            style={{ marginRight: 10 }}
             id="outlined-basic"
+            style={{ marginRight: 10, marginTop: 15 }}
             label="Номер телефона"
+            defaultCountry={"ru"}
             variant="outlined"
-            margin="normal"
-            type="number"
             required
             value={phone.value}
             onChange={(e) => phone.onChange(e)}
             onBlur={(e) => phone.onBlur(e)}
           />
-          {phone.isDirty && phone.isEmpty && (
-            <div style={{ color: "red" }}>Поле не может быть пустым</div>
-          )}
-          {phone.isDirty && phone.minValueError && (
-            <div style={{ color: "red" }}>
-              Значение не может быть отрицательным или равно 0
-            </div>
-          )}
 
           <TextField
             fullWidth={false}
@@ -250,7 +242,7 @@ const ProjectPopover = observer((addNewMember) => {
             ))}
           </TextField>
 
-          {((salary.isDirty && salary.isEmpty) || (currency.isDirty && currency.isEmpty)) && (
+          {((salary.isDirty && salary.isEmpty) || (currency.isDirty && currency.isEmpty) || (phone.isDirty && phone.isEmpty)) && (
             <div style={{ color: "red" }}>Поле не может быть пустым</div>
           )}
           {salary.isDirty && salary.minValueError && (
@@ -271,7 +263,8 @@ const ProjectPopover = observer((addNewMember) => {
               !firstName.inputValid ||
               !lastName.inputValid ||
               !phone.inputValid ||
-              !salary.inputValid
+              !salary.inputValid ||
+              !currency.inputValid
             }
           >
             Добавить

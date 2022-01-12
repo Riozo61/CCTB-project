@@ -12,12 +12,21 @@ const columns = [
 
 const CostList = observer(({costs}) => {
   const rows =  [];
-  costs.map((cost) => {
+  const projects = [];
+  if (costs.cost.projectName[0]){
+    costs.cost.projectName.forEach((element) => {
+      projects.push(element)
+    })
+  }
+  costs.forEach((cost) => {
     rows.push(cost)
   })
   return (
     <div style={{ height: 500, width: '100%' }}>
     <h2>Список затрат</h2>
+    {projects?.[0] && 
+    <h3>{projects}</h3>
+    }
       <DataGrid
         rows={rows}
         columns={columns}

@@ -9,7 +9,6 @@ import { LOGIN_ROUTE } from '../utils/consts';
 const AppRouter = observer(() => {
   const {user} = useContext(Context);
 
-  console.log(user)
   return (
     <Switch>
       {user.isAuth && authRoutes.map(({path, Component}) =>
