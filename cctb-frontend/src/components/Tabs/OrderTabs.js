@@ -47,9 +47,9 @@ export default function OrderTabs() {
         </TabPanel>
         <TabPanel value="2">
           <MaterialButtons/>
-          <h2>Материалы</h2>
           {material.material?.[0] && <MaterialsList materials={material.material}/>}
-          <h2>Оборудование</h2>
+
+          
           {equipment.equipment?.[0] && <EquipmentList equipments={equipment.equipment}/>}
         </TabPanel>
       </TabContext>

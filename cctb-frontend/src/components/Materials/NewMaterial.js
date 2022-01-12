@@ -14,24 +14,22 @@ const NewMaterial = observer(() => {
   const {equipment} = useContext(Context);
   const history = useHistory("");
 
-  const type = useInput("", { isEmpty: true, minLength: 2, maxLength: 30 });
-  const name = useInput("", { isEmpty: true, minLength: 2, maxLength: 30 });
+  const type = useInput("", { isEmpty: true, minLength: 1});
+  const name = useInput("", { isEmpty: true, minLength: 1});
 
   const supplier = useInput("", { isEmpty: true });
   const measure = useInput("", { isEmpty: true });
-  const shopName = useInput("", { isEmpty: true, minLength: 2, maxLength: 30 });
+  const shopName = useInput("", { isEmpty: true, minLength: 1});
   const quantity = useInput("", {
     isEmpty: true,
     minValue: 0,
-    maxValue: 100000,
   });
 
   const brand = useInput("", { isEmpty: true });
   const typeObj = useInput("", { isEmpty: true });
   const serialNumber = useInput("", {
     isEmpty: true,
-    minLength: 2,
-    maxLength: 50,
+    minLength: 1,
   });
 
   const brandsMat = [
@@ -85,7 +83,6 @@ const NewMaterial = observer(() => {
   ];
   const measures = [
     { value: "number", label: "шт" },
-    { value: "gram", label: "г" },
     { value: "kilogram", label: "кг" },
     { value: "meter", label: "м" },
     { value: "meter2", label: "м2" },
@@ -191,9 +188,6 @@ const NewMaterial = observer(() => {
           {name.isDirty && name.minLengthError && (
             <div style={{ color: "red" }}>Слишком короткое название</div>
           )}
-          {name.isDirty && name.maxLengthError && (
-            <div style={{ color: "red" }}>Слишком длинное название</div>
-          )}
 
           <TextField
             variant="outlined"
@@ -262,9 +256,6 @@ const NewMaterial = observer(() => {
           {shopName.isDirty && shopName.minLengthError && (
             <div style={{ color: "red" }}>Слишком короткое название</div>
           )}
-          {shopName.isDirty && shopName.maxLengthError && (
-            <div style={{ color: "red" }}>Слишком длинное название</div>
-          )}
 
           <div>
             <TextField
@@ -313,9 +304,6 @@ const NewMaterial = observer(() => {
                 Значение не может быть отрицательным или равно 0
               </div>
             )}
-            {quantity.isDirty && quantity.maxValueError && (
-              <div style={{ color: "red" }}>Слишком большое значение</div>
-            )}
           </div>
           <Button
             type="submit"
@@ -357,9 +345,6 @@ const NewMaterial = observer(() => {
           {name.isDirty && name.minLengthError && (
             <div style={{ color: "red" }}>Слишком короткое название</div>
           )}
-          {name.isDirty && name.maxLengthError && (
-            <div style={{ color: "red" }}>Слишком длинное название</div>
-          )}
           <TextField
             fullWidth={true}
             style={{ marginRight: 10 }}
@@ -377,9 +362,6 @@ const NewMaterial = observer(() => {
           )}
           {typeObj.isDirty && typeObj.minLengthError && (
             <div style={{ color: "red" }}>Слишком короткое название</div>
-          )}
-          {typeObj.isDirty && typeObj.maxLengthError && (
-            <div style={{ color: "red" }}>Слишком длинное название</div>
           )}
 
           <TextField
@@ -423,9 +405,6 @@ const NewMaterial = observer(() => {
           )}
           {serialNumber.isDirty && serialNumber.minLengthError && (
             <div style={{ color: "red" }}>Слишком короткое название</div>
-          )}
-          {serialNumber.isDirty && serialNumber.maxLengthError && (
-            <div style={{ color: "red" }}>Слишком длинное название</div>
           )}
           <Button
         type="submit"

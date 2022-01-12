@@ -12,21 +12,26 @@ const NewMember = observer(() => {
   const { otherMember } = useContext(Context);
   const history = useHistory();
 
-  const email = useInput("", { isEmpty: true, minLength: 5, isEmail: true });
+  const email = useInput("", { isEmpty: true, minLength: 3, isEmail: true });
   const firstName = useInput("", {
     isEmpty: true,
-    minLength: 2,
-    maxLength: 20,
+    minLength: 1,
   });
-  const lastName = useInput("", { isEmpty: true, minLength: 2, maxLength: 20 });
-  const role = useInput("", { isEmpty: true, minLength: 2 });
-  const type = useInput("", { isEmpty: true, minLength: 2 });
-  const phone = useInput("", { isEmpty: true, minLength: 9, maxLength: 11 });
+  const lastName = useInput("", { isEmpty: true, minLength: 1 });
+  const role = useInput("", { isEmpty: true, minLength: 1 });
+  const type = useInput("", { isEmpty: true, minLength: 1 });
+  const phone = useInput("", { isEmpty: true, minLength: 9 });
+  const company = useInput("", { isEmpty: true, minLength: 2});
   const salary = useInput("", {
     isEmpty: true,
     minValue: 0,
-    maxValue: 1000000,
   });
+  const currency = useInput("", { isEmpty: true });
+  const currencies = [
+    { value: "$", label: "$" },
+    { value: "€", label: "€" },
+    { value: "₽", label: "₽" },
+  ];
   const roles = [
     {
       value: "manager",
@@ -55,14 +60,14 @@ const NewMember = observer(() => {
       value: "partner",
       label: "Партнер",
     },
-    {
-      value: "subcontractor",
-      label: "Субподрядчик",
-    },
-    {
-      value: "supplier",
-      label: "Поставщик",
-    },
+    // {
+    //   value: "subcontractor",
+    //   label: "Субподрядчик",
+    // },
+    // {
+    //   value: "supplier",
+    //   label: "Поставщик",
+    // },
   ];
   const click = async () => {
     try {
@@ -94,7 +99,7 @@ const NewMember = observer(() => {
           phone.value,
           type.value
         );
-        otherMember.setMember({
+        otherMember.setOtherMember({
           email: email.value,
           firstName: firstName.value,
           lastName: lastName.value,
@@ -114,6 +119,7 @@ const NewMember = observer(() => {
   return (
     <Container style={{ marginLeft: "auto", marginRight: "auto" }}>
       <h2>Добавление нового участника команды</h2>
+
       <TextField
         variant="outlined"
         margin="normal"
@@ -244,9 +250,6 @@ const NewMember = observer(() => {
               Значение не может быть отрицательным или равно 0
             </div>
           )}
-          {phone.isDirty && phone.maxValueError && (
-            <div style={{ color: "red" }}>Слишком длинный номер телефона</div>
-          )}
 
           <TextField
             fullWidth={false}
@@ -261,16 +264,36 @@ const NewMember = observer(() => {
             onChange={(e) => salary.onChange(e)}
             onBlur={(e) => salary.onBlur(e)}
           />
-          {salary.isDirty && salary.isEmpty && (
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            select
+            style={{ width: 150, marginLeft: 10 }}
+            id="outlined-select-currency"
+            label="Валюта"
+            name="status"
+            autoComplete="status"
+            value={currency.value}
+            onChange={(e) => currency.onChange(e)}
+            onBlur={(e) => currency.onBlur(e)}
+          >
+            {currencies.map((option) => (
+              <MenuItem key={option.value} value={option.label}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          {((salary.isDirty && salary.isEmpty) ||
+            (currency.isDirty && currency.isEmpty)) && (
             <div style={{ color: "red" }}>Поле не может быть пустым</div>
           )}
+
           {salary.isDirty && salary.minValueError && (
             <div style={{ color: "red" }}>
               Значение не может быть отрицательным или равно 0
             </div>
-          )}
-          {salary.isDirty && salary.maxValueError && (
-            <div style={{ color: "red" }}>Слишком большое значение</div>
           )}
           <Button
             type="submit"
@@ -333,6 +356,27 @@ const NewMember = observer(() => {
           {lastName.isDirty && lastName.minLengthError && (
             <div style={{ color: "red" }}>Слишком короткая фамилия</div>
           )}
+          {/* {type.value === 'Партнер' && (
+            <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="company"
+                label="Название компании"
+                name="company"
+                autoComplete="company"
+                value={company.value}
+                onChange={(e) => company.onChange(e)}
+                onBlur={(e) => company.onBlur(e)}
+              />
+                {company.isDirty && company.isEmpty && (
+                <div style={{ color: "red" }}>Поле не может быть пустым</div>
+              )}
+              {company.isDirty && company.minLengthError && (
+                <div style={{ color: "red" }}>Слишком короткое название компании</div>
+              )}
+          )} */}
           <TextField
             variant="outlined"
             margin="normal"
@@ -375,9 +419,6 @@ const NewMember = observer(() => {
             <div style={{ color: "red" }}>
               Значение не может быть отрицательным или равно 0
             </div>
-          )}
-          {phone.isDirty && phone.maxValueError && (
-            <div style={{ color: "red" }}>Слишком длинный номер телефона</div>
           )}
           <Button
             type="submit"

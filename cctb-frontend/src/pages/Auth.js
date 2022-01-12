@@ -114,6 +114,7 @@ const Auth = observer(() => {
                 value={email.value}
                 onChange={(e) => email.onChange(e)}
                 onBlur={(e) => email.onBlur(e)}
+                // className={`sdpiADOFJ ${email.isDirty ? 'sjdfjash' : '' }`}
               />
               {email.isDirty && email.isEmpty && (
                 <div style={{ color: "red" }}>Поле не может быть пустым</div>

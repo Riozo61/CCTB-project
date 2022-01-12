@@ -5,8 +5,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useContext, useState } from "react";
-// import { createNewProject } from "../../http/projectAPI";
+import React, { useContext, useEffect, useState } from "react";
 import { createNewProject } from "../../http/axios/projectAPI";
 
 import { Context } from "../..";
@@ -14,22 +13,41 @@ import { useHistory } from "react-router";
 import { PROJECTS_ROUTE } from "../../utils/consts";
 import { observer } from "mobx-react-lite";
 import useInput from "../Validations/Hooks/useInput";
+import { getEmployee } from "../../http/axios/teamAPI";
+import ProjectPopover from "./ProjectPopover";
 
 const NewProject = observer(() => {
   const { project } = useContext(Context);
   const history = useHistory("");
+  const { member } = useContext(Context);
+  useEffect(() => {
+    getEmployee().then((data) => {
+      member.setMember(data.rows);
+    });
+  }, []);
+
+  const [projManagers, setProjManagers] = useState([]);
+  
+  function AddMember (newMember){
+    setProjManagers((prev) => [...prev, newMember])
+  }
+
+  if (member.member[0]){
+    member.member.forEach((e) => {
+      projManagers.push(e);
+    }
+    );
+  }
 
   const projectName = useInput("", {
     isEmpty: true,
     minLength: 2,
-    maxLength: 30,
   });
-  const status = useInput("", { isEmpty: true, minLength: 2, maxLength: 30 });
-  const contract = useInput("", { isEmpty: true, minLength: 2, maxLength: 30 });
+  const status = useInput("", { isEmpty: true, minLength: 1});
+  const contract = useInput("", { isEmpty: true, minLength: 1});
   const estimation = useInput("", {
     isEmpty: true,
     minValue: 0,
-    maxValue: 100000,
   });
   const [file, setFile] = useState("");
   const dateStart = useInput("", {
@@ -42,11 +60,12 @@ const NewProject = observer(() => {
   const customer = useInput("", { isEmpty: true });
   const customerName = useInput("", {
     isEmpty: true,
-    minLength: 2,
-    maxLength: 40,
+    minLength: 1,
   });
   const payment = useInput("", { isEmpty: true });
   const currency = useInput("", { isEmpty: true });
+  const [dateValidation, setDateValidation] = useState(true)
+
 
   const statuses = [
     {
@@ -69,10 +88,6 @@ const NewProject = observer(() => {
       value: "archive",
       label: "Архивировано",
     },
-  ];
-  const projManagers = [
-    { value: "manager1", label: "Руководитель 1" },
-    { value: "manager2", label: "Руководитель 2" },
   ];
   const varCustomers = [
     { value: "company", label: "Компания" },
@@ -154,9 +169,6 @@ const NewProject = observer(() => {
         {projectName.isDirty && projectName.minLengthError && (
           <div style={{ color: "red" }}>Слишком короткое название</div>
         )}
-        {projectName.isDirty && projectName.maxLengthError && (
-          <div style={{ color: "red" }}>Слишком длинное название</div>
-        )}
 
         <TextField
           variant="outlined"
@@ -200,9 +212,6 @@ const NewProject = observer(() => {
         {contract.isDirty && contract.minLengthError && (
           <div style={{ color: "red" }}>Слишком короткое название</div>
         )}
-        {contract.isDirty && contract.maxLengthError && (
-          <div style={{ color: "red" }}>Слишком длинное название</div>
-        )}
         <div>
           <TextField
             label="Расчет"
@@ -237,20 +246,14 @@ const NewProject = observer(() => {
               </MenuItem>
             ))}
           </TextField>
-          {contract.isDirty && contract.isEmpty && (
-            <div style={{ color: "red" }}>Поле не может быть пустым</div>
-          )}
 
-          {estimation.isDirty && estimation.isEmpty && (
+          {((estimation.isDirty && estimation.isEmpty) || (currency.isDirty && currency.isEmpty)) && (
             <div style={{ color: "red" }}>Поле не может быть пустым</div>
           )}
           {estimation.isDirty && estimation.minValueError && (
             <div style={{ color: "red" }}>
               Значение не может быть отрицательным или равно 0
             </div>
-          )}
-          {estimation.isDirty && estimation.maxValueError && (
-            <div style={{ color: "red" }}>Слишком большое значение</div>
           )}
         </div>
 
@@ -283,9 +286,6 @@ const NewProject = observer(() => {
               shrink: true,
             }}
           />
-          {dateStart.isDirty && dateStart.isEmpty && (
-            <div style={{ color: "red" }}>Поле не может быть пустым</div>
-          )}
 
           <TextField
             margin="normal"
@@ -301,7 +301,10 @@ const NewProject = observer(() => {
             }}
           />
         </div>
-        {dateEnd.isDirty && dateEnd.isEmpty && (
+        {(Date.parse(dateStart.value) >= Date.parse(dateEnd.value)) && (
+          <div style={{ color: "red" }}>Дата начала работ не может быть позже, чем дата конца работ</div>
+        )}
+        {((dateEnd.isDirty && dateEnd.isEmpty) || (dateStart.isDirty && dateStart.isEmpty)) && (
           <div style={{ color: "red" }}>Поле не может быть пустым</div>
         )}
 
@@ -315,19 +318,21 @@ const NewProject = observer(() => {
           label="Руководитель проекта"
           name="projManager"
           autoComplete="projManager"
-          value={projManager.value}
+          value={`${projManager.firstName} ${projManager.lastName}`}
           onChange={(e) => projManager.onChange(e)}
           onBlur={(e) => projManager.onBlur(e)}
         >
           {projManagers.map((option) => (
-            <MenuItem key={option.value} value={option.label}>
-              {option.label}
+            <MenuItem key={option.id} value={`${option.firstName} ${option.lastName}`}>
+              {`${option.firstName} ${option.lastName}`}
             </MenuItem>
           ))}
         </TextField>
         {projManager.isDirty && projManager.isEmpty && (
           <div style={{ color: "red" }}>Поле не может быть пустым</div>
         )}
+        <ProjectPopover addNewMember={AddMember}/>
+        
 
         <Typography>Заказчик</Typography>
         <TextField
@@ -358,7 +363,7 @@ const NewProject = observer(() => {
       <TextField
         fullWidth={true}
         id="outlined-basic"
-        label={customer === "Компания" ? "Название компании" : "ФИО"}
+        label={customer.value === "Компания" ? "Название компании" : "ФИО"}
         variant="outlined"
         margin="normal"
         required
@@ -372,10 +377,6 @@ const NewProject = observer(() => {
       {customerName.isDirty && customerName.minLengthError && (
         <div style={{ color: "red" }}>Слишком короткое название</div>
       )}
-      {customerName.isDirty && customerName.maxLengthError && (
-        <div style={{ color: "red" }}>Слишком длинное название</div>
-      )}
-
       <TextField
         variant="outlined"
         margin="normal"
@@ -419,7 +420,8 @@ const NewProject = observer(() => {
           !customer.inputValid ||
           !customerName.inputValid ||
           !payment.inputValid ||
-          !currency.inputValid
+          !currency.inputValid || 
+          !dateValidation
         }
       >
         Создать проект

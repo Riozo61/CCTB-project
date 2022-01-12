@@ -1,37 +1,33 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import { NEW_PROJECT_ROUTE } from "../../utils/consts";
-import { Stack } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const AppButtons = () => {
-
+  const history = useHistory();
 
   return (
-    <div>
-    <Stack direction="row" spacing={2} style={{marginLeft: 20}}>
-      <div style={{ marginBottom: 40 }}>
-        <Button
+
+<Button
+          style={{
+            textDecoration: "none",
+            color: "white",
+            borderRadius: 5,
+            background: "green",
+            marginBottom: 10,
+          marginLeft: 10,
+          marginRight: 10,
+          marginTop: 10,
+          padding: 5
+          }}
           variant="contained"
           color="success"
+          onClick={() => history.push(NEW_PROJECT_ROUTE)}
         >
-        <NavLink to={NEW_PROJECT_ROUTE} style={{textDecoration: 'none', color: 'white'}}>
           Создать проект
-        </NavLink>
         </Button>
-      </div>
-      <div>
-        <Button
-          variant="contained"
-          onClick={() => console.log("click")}
-          color="error"
-          disabled={false}
-        >
-          Удалить проект
-        </Button>
-      </div>
-    </Stack>
-    </div>
+
+
   );
 };
 
