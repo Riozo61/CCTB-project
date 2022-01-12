@@ -6,14 +6,13 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
+
 import MenuIcon from '@mui/icons-material/Menu';
 
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { NavLink} from 'react-router-dom';
-import { ORDERS_ROUTE, PROFILE_ROUTE, PROJECTS_ROUTE, REGISTRATION_ROUTE } from '../utils/consts';
+import { PROJECTS_ROUTE, REGISTRATION_ROUTE } from '../utils/consts';
 import { useContext } from 'react';
 import { Context } from '../index';
 import {observer} from 'mobx-react-lite'
@@ -85,7 +84,6 @@ const NavBar =  observer ( () => {
             color="inherit"
             aria-label="open drawer"
             sx={{ mr: 2 }}
-            onClick={() => console.log('clicked')}
           >
             <MenuIcon />
           </IconButton>

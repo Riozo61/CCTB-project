@@ -2,7 +2,6 @@ import NewCosts from "./components/Costs/NewCosts";
 import NewMaterial from "./components/Materials/NewMaterial";
 import NewOrder from "./components/NewOrderForm/NewOrder";
 import NewMember from "./components/Team/NewMember";
-import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
 import Costs from "./pages/Costs/Costs";
 import OrderPage from "./pages/Order/OrderPage";
@@ -13,7 +12,6 @@ import ProjectPage from "./pages/Project/ProjectPage";
 import Projects from "./pages/Project/Projects";
 import Team from "./pages/Team/Team";
 import {
-  ADMIN_ROUTE,
   COSTS_ROUTE,
   LOGIN_ROUTE,
   NEW_COSTS_ROUTE,
@@ -31,10 +29,6 @@ import {
 } from "./utils/consts";
 
 export const authRoutes = [
-  {
-    path: ADMIN_ROUTE,
-    Component: Admin,
-  },
   {
     path: ORDERS_ROUTE,
     Component: Orders,

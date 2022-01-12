@@ -12,10 +12,11 @@ import MemberStore from './store/MemberStore';
 import EquipmentlStore from './store/EquipmentStore';
 import OtherMemberStore from './store/OtherMemberStore';
 import CostStore from './store/CostStore';
+import PartnerStore from './store/PartnerStore';
+import BrandStore from './store/BrandStore';
 
 
 export const Context = createContext(null);
-console.log(process.env.REACT_APP_API_URL)
 
 ReactDOM.render(
   
@@ -28,6 +29,8 @@ ReactDOM.render(
     equipment: new EquipmentlStore(),
     otherMember: new OtherMemberStore(),
     cost: new CostStore(),
+    partnerMember: new PartnerStore(),
+    brand: new BrandStore(),
 
   }}>
     <App />

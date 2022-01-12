@@ -9,6 +9,12 @@ export default class MemberStore {
   setMember(member) {
     this._member = member
   };
+  addMember(member) {
+    this._member.push(member)
+  }
+  clearMembers() {
+    this._member = []
+  }
 
   get member() {
     return this._member

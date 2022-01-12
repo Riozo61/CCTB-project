@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const useValidation = (value, validations) => {
   const [isEmpty, setEmpty] = useState(true);
@@ -8,9 +8,9 @@ const useValidation = (value, validations) => {
   const [inputValid, setInputValid] = useState(false);
   const [minValueError, setMinValueError] = useState(false);
   const [maxValueError, setMaxValueError] = useState(false);
-
   useEffect(() => {
     for (const validation in validations) {
+      
       switch (validation) {
         case "minLength":
           value.length < validations[validation]
@@ -19,12 +19,11 @@ const useValidation = (value, validations) => {
           break;
         case "isEmpty":
           value ? setEmpty(false) : setEmpty(true);
-          break;
+          break; 
         case "maxLenght":
           value.length > validations[validation]
             ? setMaxLengthError(true)
             : setMaxLengthError(false);
-
           break;
         case "isEmail":
           const re =
@@ -43,6 +42,9 @@ const useValidation = (value, validations) => {
             ? setMaxValueError(true)
             : setMaxValueError(false);
           break;
+
+          default: 
+          return null;
       }
     }
   }, [value]);

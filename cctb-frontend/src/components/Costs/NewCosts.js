@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import useInput from "../Validations/Hooks/useInput";
 import { Context } from "../..";
@@ -6,11 +6,19 @@ import { useHistory } from "react-router";
 import { Button, Container, MenuItem, TextField } from "@mui/material";
 import { createNewCosts } from "../../http/axios/costsAPI";
 import { COSTS_ROUTE } from "../../utils/consts";
+import { getProjects } from "../../http/axios/projectAPI";
 
 const NewCosts = observer(() => {
   const { cost } = useContext(Context);
   const history = useHistory("");
+  const {project} = useContext(Context)
 
+  useEffect(() => {
+    getProjects().then(data => {project.setProject(data.rows)});
+  },
+  [])
+
+  const projectName = useInput("", { isEmpty: true, minLength: 1});
   const type = useInput("", { isEmpty: true });
   const estimation = useInput("", {
     isEmpty: true,
@@ -55,12 +63,16 @@ const NewCosts = observer(() => {
       data = await createNewCosts(
         type.value,
         estimation.value,
-        description.value
+        description.value,
+        projectName.value,
+        currency.value
       );
       cost.setCost({
         type: type.value,
         estimation: estimation.value,
         description: description.value,
+        project: projectName.value,
+        currency: currency.value
       });
       if (data) {
         history.push(COSTS_ROUTE);
@@ -75,6 +87,32 @@ const NewCosts = observer(() => {
   return (
     <Container style={{ marginLeft: "auto", marginRight: "auto" }}>
       <h2>Затраты</h2>
+      <TextField
+        variant="outlined"
+        margin="normal"
+        required
+        select
+        fullWidth
+        id="outlined-select-currency"
+        label="Название проекта"
+        name="status"
+        autoComplete="status"
+        value={projectName.value}
+        onChange={(e) => projectName.onChange(e)}
+        onBlur={(e) => projectName.onBlur(e)}
+      >
+        {project.project[0] && project.project.map((option) => (
+          <MenuItem key={option.id} value={option.projectName}>
+            {option.projectName}
+          </MenuItem>
+        ))}
+      </TextField>
+      {projectName.isDirty && projectName.isEmpty && (
+        <div style={{ color: "red" }}>Поле не может быть пустым</div>
+      )}
+      {projectName.isDirty && projectName.minLengthError && (
+        <div style={{ color: "red" }}>Слишком короткое название</div>
+      )}
       <TextField
         variant="outlined"
         margin="normal"

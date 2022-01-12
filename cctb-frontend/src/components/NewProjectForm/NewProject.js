@@ -23,21 +23,9 @@ const NewProject = observer(() => {
   useEffect(() => {
     getEmployee().then((data) => {
       member.setMember(data.rows);
-    });
+
+    })
   }, []);
-
-  const [projManagers, setProjManagers] = useState([]);
-  
-  function AddMember (newMember){
-    setProjManagers((prev) => [...prev, newMember])
-  }
-
-  if (member.member[0]){
-    member.member.forEach((e) => {
-      projManagers.push(e);
-    }
-    );
-  }
 
   const projectName = useInput("", {
     isEmpty: true,
@@ -64,7 +52,6 @@ const NewProject = observer(() => {
   });
   const payment = useInput("", { isEmpty: true });
   const currency = useInput("", { isEmpty: true });
-  const [dateValidation, setDateValidation] = useState(true)
 
 
   const statuses = [
@@ -139,7 +126,6 @@ const NewProject = observer(() => {
       });
       if (data) {
         history.push(PROJECTS_ROUTE);
-        console.log(data);
       } else {
         console.log(data);
       }
@@ -234,8 +220,7 @@ const NewProject = observer(() => {
             style={{ width: 150, marginLeft: 10 }}
             id="outlined-select-currency"
             label="Валюта"
-            name="status"
-            autoComplete="status"
+            name="currency"
             value={currency.value}
             onChange={(e) => currency.onChange(e)}
             onBlur={(e) => currency.onBlur(e)}
@@ -318,11 +303,11 @@ const NewProject = observer(() => {
           label="Руководитель проекта"
           name="projManager"
           autoComplete="projManager"
-          value={`${projManager.firstName} ${projManager.lastName}`}
+          value={projManager.value}
           onChange={(e) => projManager.onChange(e)}
           onBlur={(e) => projManager.onBlur(e)}
         >
-          {projManagers.map((option) => (
+          {member.member[0] && member.member.map((option) => (
             <MenuItem key={option.id} value={`${option.firstName} ${option.lastName}`}>
               {`${option.firstName} ${option.lastName}`}
             </MenuItem>
@@ -331,7 +316,7 @@ const NewProject = observer(() => {
         {projManager.isDirty && projManager.isEmpty && (
           <div style={{ color: "red" }}>Поле не может быть пустым</div>
         )}
-        <ProjectPopover addNewMember={AddMember}/>
+        <ProjectPopover/>
         
 
         <Typography>Заказчик</Typography>
@@ -421,7 +406,9 @@ const NewProject = observer(() => {
           !customerName.inputValid ||
           !payment.inputValid ||
           !currency.inputValid || 
-          !dateValidation
+          !dateEnd.inputValid ||
+          !dateStart.inputValid ||
+          (Date.parse(dateStart.value) >= Date.parse(dateEnd.value))
         }
       >
         Создать проект

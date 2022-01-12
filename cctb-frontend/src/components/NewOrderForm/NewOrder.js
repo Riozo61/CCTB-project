@@ -9,35 +9,34 @@ import { Context } from "../..";
 import useInput from "../Validations/Hooks/useInput";
 import { useEffect } from "react";
 import { getProjects } from "../../http/axios/projectAPI";
-import { getOtherMember } from "../../http/axios/teamAPI";
+import { getPartnerMember } from "../../http/axios/partnerAPI";
+import BrandPopover from "./BrandPopover";
+import { getBrand } from "../../http/axios/brandAPI";
 
 const NewOrder = observer(() => {
   const { order } = useContext(Context);
   const history = useHistory("");
   const {project} = useContext(Context)
-  const {otherMember} = useContext(Context);
+  const {partnerMember} = useContext(Context);
+  const {brand} = useContext(Context);
 
   useEffect(() => {
     getProjects().then(data => {project.setProject(data.rows)});
-    getOtherMember().then(data => {otherMember.setOtherMember(data.rows)})
-  }, [])
-  const projects = [];
+    getPartnerMember().then(data => {partnerMember.setPartnerMember(data.rows)});
+    getBrand().then(data => {brand.brand.setBrand(data.rows)})
+    
+  },
+  
+  [])
   const suppliers = [];
-  if (otherMember.otherMember[0]){
-    otherMember.otherMember.forEach((element) => {
-      if (element.type === "Поставщик") {
+  if (partnerMember.partnerMember[0]){
+    partnerMember.partnerMember.forEach((element) => {
+      if (element.rolePartner === "Поставщик") {
         suppliers.push(element);
       }
     });
   }
   
-
-  if (project.project[0]){
-    project.project.forEach((e) => {
-      projects.push(e);
-    }
-    );
-  }
   const orderName = useInput("", {
     isEmpty: true,
     minLength: 2,
@@ -47,38 +46,25 @@ const NewOrder = observer(() => {
   const measure = useInput("", { isEmpty: true });
   const [photo, setPhoto] = useState("");
   const shopName = useInput("", { isEmpty: true, minLength: 1});
-  const brand = useInput("", { isEmpty: true });
+  const brandName = useInput("", { isEmpty: true });
   const quantity = useInput("", {
     isEmpty: true,
     minValue: 0,
   });
 
-  const brands = [
-    {
-      value: "brand1",
-      label: "Бренд 1",
-    },
-    {
-      value: "brand2",
-      label: "Бренд 2",
-    },
-    {
-      value: "brand3",
-      label: "Бренд 3",
-    },
-    {
-      value: "brand4",
-      label: "Бренд 4",
-    },
-    {
-      value: "brand5",
-      label: "Бренд 5",
-    },
-  ];
+  const brands = [];
+  if (brand.brand[0]){
+    brand.brand.forEach((element) => {
+      if (element.brandName) {
+        brands.push(element);
+      }
+    });
+  }
+
 
   const measures = [
     { value: "number", label: "шт" },
-    { value: "gram", label: "г" },
+    { value: "ton", label: "т" },
     { value: "kilogram", label: "кг" },
     { value: "meter", label: "м" },
     { value: "meter2", label: "м2" },
@@ -96,7 +82,7 @@ const NewOrder = observer(() => {
         measure.value,
         photo,
         shopName.value,
-        brand.value,
+        brandName.value,
         quantity.value
       );
 
@@ -107,13 +93,12 @@ const NewOrder = observer(() => {
         measure: measure.value,
         photo: photo.value,
         shopName: shopName.value,
-        brand: brand.value,
+        brand: brandName.value,
         quantity: quantity.value,
       });
 
       if (data) {
         history.push(ORDERS_ROUTE);
-        console.log(data);
       } else {
         console.log(data);
       }
@@ -157,7 +142,7 @@ const NewOrder = observer(() => {
         onChange={(e) => projectName.onChange(e)}
         onBlur={(e) => projectName.onBlur(e)}
       >
-        {projects.map((option) => (
+        {project.project[0] && project.project.map((option) => (
           <MenuItem key={option.id} value={option.projectName}>
             {option.projectName}
           </MenuItem>
@@ -180,9 +165,9 @@ const NewOrder = observer(() => {
         label="Бренд"
         name="brand"
         autoComplete="brand"
-        value={brand.value}
-        onChange={(e) => brand.onChange(e)}
-        onBlur={(e) => brand.onBlur(e)}
+        value={brandName.value}
+        onChange={(e) => brandName.onChange(e)}
+        onBlur={(e) => brandName.onBlur(e)}
       >
         {brands.map((option) => (
           <MenuItem key={option.value} value={option.label}>
@@ -190,9 +175,10 @@ const NewOrder = observer(() => {
           </MenuItem>
         ))}
       </TextField>
-      {brand.isDirty && brand.isEmpty && (
+      {brandName.isDirty && brandName.isEmpty && (
         <div style={{ color: "red" }}>Поле не может быть пустым</div>
       )}
+      <BrandPopover/>
 
       <TextField
         variant="outlined"
@@ -204,7 +190,7 @@ const NewOrder = observer(() => {
         label="Поставщик"
         name="supplier"
         autoComplete="supplier"
-        value={`${supplier.firstName} ${supplier.lastName}`}
+        value={supplier.value}
         onChange={(e) => supplier.onChange(e)}
         onBlur={(e) => supplier.onBlur(e)}
       >
@@ -226,7 +212,6 @@ const NewOrder = observer(() => {
         id="outlined-select-currency"
         label="Название магазина"
         name="shopName"
-        autoComplete="shopName"
         value={shopName.value}
         onChange={(e) => shopName.onChange(e)}
         onBlur={(e) => shopName.onBlur(e)}

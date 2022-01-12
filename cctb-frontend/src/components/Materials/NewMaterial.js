@@ -132,7 +132,6 @@ const NewMaterial = observer(() => {
       }
       if (data) {
         history.push(ORDERS_ROUTE);
-        console.log(data);
       } else {
         console.log(data);
       }

@@ -35,7 +35,8 @@ export const createOtherMember = async (
   firstName,
   lastName,
   phone,
-  type
+  type,
+  company
 ) => {
   const { data } = await $authHost.post("api/others/newother", {
     email: email,
@@ -43,6 +44,7 @@ export const createOtherMember = async (
     lastName: lastName,
     phone: phone,
     type: type,
+    company: company
   });
   return data;
 };

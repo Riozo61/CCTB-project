@@ -6,10 +6,16 @@ export default class OtherMemberStore {
     makeAutoObservable(this);
   };
 
-  setOtherMember(otherMember) {
-    this._otherMember = otherMember
-  };
 
+  setOtherMember(other) {
+    this._otherMember = other
+  };
+  addOtherMember(other) {
+    this._otherMember.push(other)
+  };
+  clearOtherMember() {
+    this._otherMember = [];
+  }
   get otherMember() {
     return this._otherMember
   };

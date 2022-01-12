@@ -2,8 +2,7 @@ import List from "@mui/material/List";
 import React, { useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import AppButtons from "../../components/ProjectButtons/buttons";
-import ProjectList from "../../components/ProjectList/ProjectList copy";
-// import { getProjects } from "../../http/projectAPI";
+import ProjectList from "../../components/ProjectList/ProjectList";
 import { getProjects } from "../../http/axios/projectAPI";
 import { Context } from "../..";
 
