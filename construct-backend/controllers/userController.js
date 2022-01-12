@@ -14,7 +14,7 @@ const generateJwt = (id,email,role)=> {
 
 class UserController {
     async registration(req, res, next) {
-        const {firstName, lastName,email, password, role,company} = req.body
+        const {firstName, lastName,email, password, role} = req.body
         if (!email || !password) {
             return next(ApiError.badRequest('Некорректный email или password'))
         }
@@ -23,7 +23,7 @@ class UserController {
             return next(ApiError.badRequest('Пользователь с таким email уже существует'))
         }
         const hashPassword = await bcrypt.hash(password, 5)
-        const user = await User.User.create({firstName, lastName,email, password, role,company, password: hashPassword})
+        const user = await User.User.create({firstName, lastName,email, password, role, password: hashPassword})
         const token = generateJwt(user.id, user.email, user.role)
         return res.json({token})
     }
@@ -51,7 +51,7 @@ class UserController {
     async getAll(req, res) {
         let {limit, page} = req.query
         page = page || 1
-        limit = limit || 9
+        limit = limit || 100
         let offset = page * limit - limit
         let  users;
         users = await User.User.findAndCountAll({limit, offset})

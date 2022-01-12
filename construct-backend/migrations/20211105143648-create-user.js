@@ -24,9 +24,7 @@ module.exports = {
       role: {
         type: Sequelize.STRING
       },
-      company: {
-        type: Sequelize.STRING
-      },
+     
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

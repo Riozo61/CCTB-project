@@ -22,7 +22,7 @@ class EquipmentController {
     async getAll(req, res) {
         let {limit, page} = req.query
         page = page || 1
-        limit = limit || 9
+        limit = limit || 100
         let offset = page * limit - limit
         let allEquipment;
         allEquipment = await Equipment.Equipment.findAndCountAll({limit, offset})

@@ -22,7 +22,7 @@ class ProjectController {
     async getAll(req, res) {
         let {projManager, limit, page} = req.query
         page = page || 1
-        limit = limit || 9
+        limit = limit || 100
         let offset = page * limit - limit
         let projects;
         if (!projManager) {

@@ -18,7 +18,7 @@ class MaterialsController {
     async getAll(req, res) {
         let {limit, page} = req.query
         page = page || 1
-        limit = limit || 9
+        limit = limit || 100
         let offset = page * limit - limit
         let materials;
         materials = await Materials.Materials.findAndCountAll({limit, offset})

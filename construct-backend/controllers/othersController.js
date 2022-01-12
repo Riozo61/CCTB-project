@@ -5,8 +5,8 @@ const ApiError = require('../error/ApiError');
 
 class OthersController {
     async create(req, res, next) {
-        const {email,firstName,lastName,phone,type} = req.body
-        if (!email||!firstName||!lastName||!phone||!type ) {
+        const {email,firstName,lastName,phone,type,company} = req.body
+        if (!email||!firstName||!lastName||!phone||!type||!company) {
             return next(ApiError.badRequest('Заполните обязательные поля'))
         }
         const othrs = await Others.Others.findOne({where: {email}})
@@ -14,7 +14,7 @@ class OthersController {
             return next(ApiError.badRequest('Контрагент уже зарегистрирован'))
         }
 
-        const others = await Others.Others.create({email,firstName,lastName,phone,type})
+        const others = await Others.Others.create({email,firstName,lastName,phone,type,company})
     
         return res.json(others)
     }
@@ -22,7 +22,7 @@ class OthersController {
     async getAll(req, res) {
         let {limit, page} = req.query
         page = page || 1
-        limit = limit || 9
+        limit = limit || 100
         let offset = page * limit - limit
         let Other;
         Other = await Others.Others.findAndCountAll({limit, offset})
