@@ -70,7 +70,7 @@ const BrandPopover = observer(() => {
             required
             fullWidth
             id="firstName"
-            label="Имя"
+            label="Название бренда"
             name="firstName"
             autoComplete="firstName"
             value={brandName.value}

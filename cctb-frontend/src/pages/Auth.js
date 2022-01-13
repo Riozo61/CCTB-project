@@ -42,6 +42,10 @@ const Auth = observer(() => {
       value: "worker",
       label: "Рабочий",
     },
+    {
+      value: "moderator",
+      label: "Модератор",
+    }
   ];
 
   const click = async () => {
@@ -237,7 +241,7 @@ const Auth = observer(() => {
                   onBlur={(e) => role.onBlur(e)}
                 >
                   {roles.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
+                    <MenuItem key={option.value} value={option.label}>
                       {option.label}
                     </MenuItem>
                   ))}

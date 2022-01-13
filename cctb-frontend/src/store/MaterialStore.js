@@ -6,6 +6,12 @@ export default class MaterialStore {
 
     makeAutoObservable(this);
   };
+  addMaterial(material) {
+    this._material.push(material)
+  }
+  clearMaterial() {
+    this._material = []
+  }
 
   setMaterial(order) {
     this._material = order

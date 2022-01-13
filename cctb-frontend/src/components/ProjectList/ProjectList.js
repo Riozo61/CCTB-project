@@ -30,7 +30,7 @@ const columns = [
 
 const ProjectList = observer(({projects}) => {
   const rows =  [];
-  projects.map((proj) => {
+  projects.forEach((proj) => {
     rows.push(proj)
   })
   return (

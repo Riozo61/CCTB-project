@@ -5,21 +5,21 @@ import React from 'react';
 
 const columns = [
   { field: 'orderName', headerName: 'Название заявки', width: 200 },
-  { field: 'supplier', headerName: 'Поставщик', width: 190 },
-  { field: 'project', headerName: 'Проект', width: 130 },
+  { field: 'supplier', headerName: 'Поставщик', width: 200 },
+  { field: 'project', headerName: 'Проект', width: 200 },
   {
     field: 'measure',
     headerName: 'Ед.измерения',
-    width: 150,
+    width: 200,
   },
   {
     field: 'photo',
     headerName: 'Фото',
-    width: 150,
+    width: 200,
   },
-  { field: 'shopName', headerName: 'Название магазина', width: 150 },
-  { field: 'brand', headerName: 'Бренд', width: 150},
-  { field: 'quantity', headerName: 'Количество', width: 150},
+  { field: 'shopName', headerName: 'Название магазина', width: 200 },
+  { field: 'brand', headerName: 'Бренд', width: 200},
+  { field: 'quantity', headerName: 'Количество', width: 200},
 
 ];
 
@@ -32,7 +32,7 @@ const OrderList = observer( ({orders}) => {
 
   return (
 
-    <div style={{ height: 800, width: '70%' }}>
+    <div style={{ height: 800, width: '100%' }}>
     <h2>Список Заявок</h2>
       <DataGrid
         rows={rows}

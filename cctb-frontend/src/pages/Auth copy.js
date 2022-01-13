@@ -41,6 +41,10 @@ const roles = [
     value: "worker",
     label: "Рабочий",
   },
+  {
+    value: "moderator",
+    label: "Модератор",
+  }
 ];
 
 const form = (props) => {

@@ -6,6 +6,13 @@ export default class CostStore {
     makeAutoObservable(this);
   };
 
+  addCost(cost) {
+    this._cost.push(cost)
+  }
+  clearCost() {
+    this._cost = []
+  }
+
   setCost(cost) {
     this._cost = cost
   };

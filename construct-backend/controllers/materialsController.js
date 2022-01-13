@@ -5,12 +5,12 @@ const ApiError = require('../error/ApiError');
 
 class MaterialsController {
     async create(req, res, next) {
-            const {type,name,supplier,measure,shopName,quantity} = req.body
-            if (!type || !name || !supplier || !shopName || !measure || !quantity ) {
+            const {type,name,supplier,measure,shopName,quantity,brand} = req.body
+            if (!type || !name || !supplier || !shopName || !measure || !quantity || !brand) {
                 return next(ApiError.badRequest('Заполните обязательные поля'))
             }
 
-            const material = await Materials.Materials.create({type,name,supplier,measure,shopName,quantity})
+            const material = await Materials.Materials.create({type,name,supplier,measure,shopName,quantity, brand})
         
             return res.json(material)
         }

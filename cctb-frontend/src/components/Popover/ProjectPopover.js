@@ -45,6 +45,11 @@ const ProjectPopover = observer(() => {
       value: "worker",
       label: "Рабочий",
     },
+    {
+      value: "moderator",
+      label: "Модератор",
+    }
+
   ];
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

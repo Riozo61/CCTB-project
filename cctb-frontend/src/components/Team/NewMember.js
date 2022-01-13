@@ -50,6 +50,10 @@ const NewMember = observer(() => {
       value: "worker",
       label: "Рабочий",
     },
+    {
+      value: "moderator",
+      label: "Модератор",
+    }
   ];
 
   const types = [
@@ -90,7 +94,7 @@ const NewMember = observer(() => {
           type.value,
           currency.value
         );
-        member.addMember({
+        member.setMember({
           email: email.value,
           firstName: firstName.value,
           lastName: lastName.value,
@@ -110,7 +114,7 @@ const NewMember = observer(() => {
           company.value,
           rolePartner.value
         );
-        partnerMember.addPartnerMember({
+        partnerMember.setPartnerMember({
           email: email.value,
           firstName: firstName.value,
           lastName: lastName.value,
@@ -128,7 +132,7 @@ const NewMember = observer(() => {
           type.value,
           company.value
         );
-        otherMember.addOtherMember({
+        otherMember.setOtherMember({
           email: email.value,
           firstName: firstName.value,
           lastName: lastName.value,

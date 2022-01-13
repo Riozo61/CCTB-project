@@ -7,8 +7,9 @@ export const createNewEmployee = async (
   role,
   phone,
   salary,
+  type,
   currency,
-  type
+  
 ) => {
   const { data } = await $authHost.post("api/employee/newemployee", {
     email: email,
@@ -17,8 +18,9 @@ export const createNewEmployee = async (
     role: role,
     phone: phone,
     salary: salary,
-    currency: currency,
     type: type,
+    currency: currency,
+    
   });
   return data;
 };

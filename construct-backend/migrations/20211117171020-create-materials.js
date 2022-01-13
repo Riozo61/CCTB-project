@@ -26,6 +26,9 @@ module.exports = {
       quantity: {
         type: Sequelize.FLOAT
       },
+      brand: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

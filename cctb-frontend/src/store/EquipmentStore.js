@@ -6,6 +6,13 @@ export default class EquipmentlStore {
 
     makeAutoObservable(this);
   };
+  addEquipment(equipment) {
+    this._equipment.push(equipment)
+  }
+  clearEquipment() {
+    this._equipment = []
+  }
+
 
   setEquipment(equipment) {
     this._equipment = equipment

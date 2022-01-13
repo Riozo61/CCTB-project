@@ -14,7 +14,7 @@ import { PROJECTS_ROUTE } from "../../utils/consts";
 import { observer } from "mobx-react-lite";
 import useInput from "../Validations/Hooks/useInput";
 import { getEmployee } from "../../http/axios/teamAPI";
-import ProjectPopover from "./ProjectPopover";
+import ProjectPopover from "../Popover/ProjectPopover";
 
 const NewProject = observer(() => {
   const { project } = useContext(Context);
@@ -289,6 +289,12 @@ const NewProject = observer(() => {
         {(Date.parse(dateStart.value) >= Date.parse(dateEnd.value)) && (
           <div style={{ color: "red" }}>Дата начала работ не может быть позже, чем дата конца работ</div>
         )}
+        {(((Date.now()) - 86400000) >= Date.parse(dateStart.value)) && (
+          <div style={{ color: "red" }}>Дата начала работ не может быть раньше сегодняшнего дня</div>
+        )}
+        {((Date.parse(dateEnd.value) - Date.parse(dateStart.value)) >= 86400000*365*5) && (
+          <div style={{ color: "red" }}>Дата конца работ не может превышать более 5 лет</div>
+        )}
         {((dateEnd.isDirty && dateEnd.isEmpty) || (dateStart.isDirty && dateStart.isEmpty)) && (
           <div style={{ color: "red" }}>Поле не может быть пустым</div>
         )}
@@ -408,7 +414,9 @@ const NewProject = observer(() => {
           !currency.inputValid || 
           !dateEnd.inputValid ||
           !dateStart.inputValid ||
-          (Date.parse(dateStart.value) >= Date.parse(dateEnd.value))
+          (Date.parse(dateStart.value) >= Date.parse(dateEnd.value)) ||
+          ((Date.now()) - 86400000) >= Date.parse(dateStart.value) ||
+          ((Date.parse(dateEnd.value) - Date.parse(dateStart.value)) >= 86400000*365*5)
         }
       >
         Создать проект

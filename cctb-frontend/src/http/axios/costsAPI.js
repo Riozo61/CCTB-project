@@ -1,10 +1,10 @@
 import { $authHost } from "./index";
 
 export const createNewCosts = async (
-  type, estimation, description
+  type, estimation, description, project, currency
 ) => {
   const { data } = await $authHost.post("api/cost/newcost", {
-    type: type, estimation: estimation, description: description
+    type: type, estimation: estimation, description: description, project:project, currency:currency
   });
   return data;
 };

@@ -6,6 +6,12 @@ export default class OrderStore {
 
     makeAutoObservable(this);
   };
+  addOrder(order) {
+    this._order.push(order)
+  }
+  clearOrder() {
+    this._order = []
+  }
 
   setOrder(order) {
     this._order = order

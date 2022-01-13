@@ -1,18 +1,39 @@
 import { Button, Container, MenuItem, TextField } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { useHistory } from "react-router";
 import { ORDERS_ROUTE } from "../../utils/consts";
 import { observer } from "mobx-react-lite";
-// import { createNewEquipment, createNewMaterial } from "../../http/materialAPI";
 import { Context } from "../..";
 import { createNewMaterial } from "../../http/axios/materialAPI";
 import { createNewEquipment } from "../../http/axios/equipmentAPI";
 import useInput from "../Validations/Hooks/useInput";
+import { getBrand } from "../../http/axios/brandAPI";
+import { getPartnerMember } from "../../http/axios/partnerAPI";
+import BrandPopover from "../Popover/BrandPopover";
+import SupplierPopover from "../Popover/SupplierPopover";
 
 const NewMaterial = observer(() => {
   const { material } = useContext(Context);
   const {equipment} = useContext(Context);
   const history = useHistory("");
+  const {brand} = useContext(Context);
+  const {partnerMember} = useContext(Context)
+
+  useEffect(() => {
+    getPartnerMember().then(data => {partnerMember.setPartnerMember(data.rows)});
+    getBrand().then(data => {brand.setBrand(data.rows)})
+    
+  },
+  
+  []);
+  const suppliers = [];
+  if (partnerMember.partnerMember[0]){
+    partnerMember.partnerMember.forEach((element) => {
+      if (element.rolePartner === "Поставщик") {
+        suppliers.push(element);
+      }
+    });
+  }
 
   const type = useInput("", { isEmpty: true, minLength: 1});
   const name = useInput("", { isEmpty: true, minLength: 1});
@@ -25,68 +46,21 @@ const NewMaterial = observer(() => {
     minValue: 0,
   });
 
-  const brand = useInput("", { isEmpty: true });
+  const brandName = useInput("", { isEmpty: true });
   const typeObj = useInput("", { isEmpty: true });
   const serialNumber = useInput("", {
     isEmpty: true,
     minLength: 1,
   });
 
-  const brandsMat = [
-    {
-      value: "brand1",
-      label: "Бренд материала 1",
-    },
-    {
-      value: "brand2",
-      label: "Бренд материала 2",
-    },
-    {
-      value: "brand3",
-      label: "Бренд материала 3",
-    },
-    {
-      value: "brand4",
-      label: "Бренд материала 4",
-    },
-    {
-      value: "brand5",
-      label: "Бренд материала 5",
-    },
-  ];
-  const brandsEq = [
-    {
-      value: "brand1",
-      label: "Бренд оборудования 1",
-    },
-    {
-      value: "brand2",
-      label: "Бренд оборудования 2",
-    },
-    {
-      value: "brand3",
-      label: "Бренд оборудования 3",
-    },
-    {
-      value: "brand4",
-      label: "Бренд оборудования 4",
-    },
-    {
-      value: "brand5",
-      label: "Бренд оборудования 5",
-    },
-  ];
-
-  const suppliers = [
-    { value: "supplier1", label: "Поставщик 1" },
-    { value: "supplier2", label: "Поставщик 2" },
-  ];
   const measures = [
     { value: "number", label: "шт" },
     { value: "kilogram", label: "кг" },
+    { value: "ton", label: "т" },
     { value: "meter", label: "м" },
     { value: "meter2", label: "м2" },
     { value: "meter3", label: "м3" },
+    
   ];
   const types = [
     { value: "material", label: "Материал" },
@@ -104,7 +78,8 @@ const NewMaterial = observer(() => {
           supplier.value,
           measure.value,
           shopName.value,
-          quantity.value
+          quantity.value,
+          brandName.value
         );
         material.setMaterial({
           type: type.value,
@@ -113,19 +88,20 @@ const NewMaterial = observer(() => {
           measure: measure.value,
           shopName: shopName.value,
           quantity: quantity.value,
+          brand: brandName.value
         });
       } else {
         data = await createNewEquipment(
           type.value,
+          brandName.value,
           name.value,
-          brand.value,
           typeObj.value,
           serialNumber.value
         );
-        equipment.setEquipment({
+        equipment.addEquipment({
           type: type.value,
+          brand: brandName.value,
           name: name.value,
-          brand: brand.value,
           typeObj: typeObj.value,
           serialNumber: serialNumber.value,
         });
@@ -198,19 +174,21 @@ const NewMaterial = observer(() => {
             label="Бренд"
             name="brand"
             autoComplete="brand"
-            value={brand.value}
-            onChange={(e) => brand.onChange(e)}
-            onBlur={(e) => brand.onBlur(e)}
+            value={brandName.value}
+            onChange={(e) => brandName.onChange(e)}
+            onBlur={(e) => brandName.onBlur(e)}
           >
-            {brandsMat.map((option) => (
-              <MenuItem key={option.value} value={option.label}>
-                {option.label}
-              </MenuItem>
-            ))}
+          {brand.brand[0] &&
+          brand.brand.map((option) => (
+            <MenuItem key={option.id} value={option.brandName}>
+              {option.brandName}
+            </MenuItem>
+          ))}
           </TextField>
-          {brand.isDirty && brand.isEmpty && (
+          {brandName.isDirty && brandName.isEmpty && (
             <div style={{ color: "red" }}>Поле не может быть пустым</div>
           )}
+          <BrandPopover/>
 
           <TextField
             variant="outlined"
@@ -227,14 +205,18 @@ const NewMaterial = observer(() => {
             onBlur={(e) => supplier.onBlur(e)}
           >
             {suppliers.map((option) => (
-              <MenuItem key={option.value} value={option.label}>
-                {option.label}
-              </MenuItem>
-            ))}
+          <MenuItem
+            key={option.id}
+            value={`${option.firstName} ${option.lastName}`}
+          >
+            {`${option.firstName} ${option.lastName}`}
+          </MenuItem>
+        ))}
           </TextField>
           {supplier.isDirty && supplier.isEmpty && (
             <div style={{ color: "red" }}>Поле не может быть пустым</div>
           )}
+          <SupplierPopover/>
 
           <TextField
             variant="outlined"
@@ -366,26 +348,27 @@ const NewMaterial = observer(() => {
           <TextField
             variant="outlined"
             margin="normal"
-            style={{ width: 160 }}
             required
             select
-            fullWidth={false}
+            fullWidth={true}
             id="outlined-select-currency"
             label="Бренд"
             name="Brand"
-            value={brand.value}
-            onChange={(e) => brand.onChange(e)}
-            onBlur={(e) => brand.onBlur(e)}
+            value={brandName.value}
+            onChange={(e) => brandName.onChange(e)}
+            onBlur={(e) => brandName.onBlur(e)}
           >
-            {brandsEq.map((option) => (
-              <MenuItem key={option.value} value={option.label}>
-                {option.label}
-              </MenuItem>
-            ))}
+          {brand.brand[0] &&
+          brand.brand.map((option) => (
+            <MenuItem key={option.id} value={option.brandName}>
+              {option.brandName}
+            </MenuItem>
+          ))}
           </TextField>
-          {brand.isDirty && brand.isEmpty && (
+          {brandName.isDirty && brandName.isEmpty && (
             <div style={{ color: "red" }}>Поле не может быть пустым</div>
           )}
+          <BrandPopover/>
 
           <TextField
             fullWidth={true}
@@ -416,7 +399,7 @@ const NewMaterial = observer(() => {
         disabled={
           !type.inputValid ||
           !name.inputValid ||
-          !brand.inputValid ||
+          !brandName.inputValid ||
           !typeObj.inputValid ||
           !serialNumber.inputValid
         }

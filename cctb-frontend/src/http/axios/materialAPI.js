@@ -1,10 +1,10 @@
 import { $authHost } from "./index";
 
 export const createNewMaterial = async (
-  type, name, supplier, measure, shopName, quantity
+  type, name, supplier, measure, shopName, quantity, brand
 ) => {
   const { data } = await $authHost.post("api/material/newmaterial", {
-    type: type, name: name, supplier: supplier, measure: measure, shopName: shopName, quantity: quantity
+    type: type, name: name, supplier: supplier, measure: measure, shopName: shopName, quantity: quantity, brand: brand
   });
   return data;
 };

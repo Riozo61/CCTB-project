@@ -3,15 +3,15 @@ import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
 import { ORDERS_ROUTE } from "../../utils/consts";
 import { observer } from "mobx-react-lite";
-// import { createNewOrder } from "../../http/orderAPI";
 import { createNewOrder } from "../../http/axios/orderAPI";
 import { Context } from "../..";
 import useInput from "../Validations/Hooks/useInput";
 import { useEffect } from "react";
 import { getProjects } from "../../http/axios/projectAPI";
 import { getPartnerMember } from "../../http/axios/partnerAPI";
-import BrandPopover from "./BrandPopover";
+import BrandPopover from "../Popover/BrandPopover";
 import { getBrand } from "../../http/axios/brandAPI";
+import SupplierPopover from "../Popover/SupplierPopover";
 
 const NewOrder = observer(() => {
   const { order } = useContext(Context);
@@ -23,7 +23,7 @@ const NewOrder = observer(() => {
   useEffect(() => {
     getProjects().then(data => {project.setProject(data.rows)});
     getPartnerMember().then(data => {partnerMember.setPartnerMember(data.rows)});
-    getBrand().then(data => {brand.brand.setBrand(data.rows)})
+    getBrand().then(data => {brand.setBrand(data.rows)})
     
   },
   
@@ -52,14 +52,7 @@ const NewOrder = observer(() => {
     minValue: 0,
   });
 
-  const brands = [];
-  if (brand.brand[0]){
-    brand.brand.forEach((element) => {
-      if (element.brandName) {
-        brands.push(element);
-      }
-    });
-  }
+
 
 
   const measures = [
@@ -108,7 +101,7 @@ const NewOrder = observer(() => {
   };
 
   return (
-    <Container style={{ marginLeft: 'auto', marginRight: 'auto'}}>
+    <Container style={{ marginLeft: "auto", marginRight: "auto" }}>
       <h2>Создание новой заявки</h2>
       <TextField
         fullWidth={true}
@@ -142,11 +135,12 @@ const NewOrder = observer(() => {
         onChange={(e) => projectName.onChange(e)}
         onBlur={(e) => projectName.onBlur(e)}
       >
-        {project.project[0] && project.project.map((option) => (
-          <MenuItem key={option.id} value={option.projectName}>
-            {option.projectName}
-          </MenuItem>
-        ))}
+        {project.project[0] &&
+          project.project.map((option) => (
+            <MenuItem key={option.id} value={option.projectName}>
+              {option.projectName}
+            </MenuItem>
+          ))}
       </TextField>
       {projectName.isDirty && projectName.isEmpty && (
         <div style={{ color: "red" }}>Поле не может быть пустым</div>
@@ -169,16 +163,18 @@ const NewOrder = observer(() => {
         onChange={(e) => brandName.onChange(e)}
         onBlur={(e) => brandName.onBlur(e)}
       >
-        {brands.map((option) => (
-          <MenuItem key={option.value} value={option.label}>
-            {option.label}
-          </MenuItem>
-        ))}
+        {brand.brand[0] &&
+          brand.brand.map((option) => (
+            <MenuItem key={option.id} value={option.brandName}>
+              {option.brandName}
+            </MenuItem>
+          ))}
+
       </TextField>
       {brandName.isDirty && brandName.isEmpty && (
         <div style={{ color: "red" }}>Поле не может быть пустым</div>
       )}
-      <BrandPopover/>
+      <BrandPopover />
 
       <TextField
         variant="outlined"
@@ -195,7 +191,10 @@ const NewOrder = observer(() => {
         onBlur={(e) => supplier.onBlur(e)}
       >
         {suppliers.map((option) => (
-          <MenuItem key={option.id} value={`${option.firstName} ${option.lastName}`}>
+          <MenuItem
+            key={option.id}
+            value={`${option.firstName} ${option.lastName}`}
+          >
             {`${option.firstName} ${option.lastName}`}
           </MenuItem>
         ))}
@@ -203,6 +202,7 @@ const NewOrder = observer(() => {
       {supplier.isDirty && supplier.isEmpty && (
         <div style={{ color: "red" }}>Поле не может быть пустым</div>
       )}
+      <SupplierPopover/>
 
       <TextField
         variant="outlined"
@@ -301,7 +301,7 @@ const NewOrder = observer(() => {
           !projectName.inputValid ||
           !measure.inputValid ||
           !shopName.inputValid ||
-          !brand.inputValid ||
+          !brandName.inputValid ||
           !quantity.inputValid
         }
       >

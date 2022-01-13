@@ -3,7 +3,7 @@ import { $authHost } from "./index";
 export const createNewBrand = async (
   brandName
 ) => {
-  const { data } = await $authHost.post("api/brand/newebrand", {
+  const { data } = await $authHost.post("api/brand/newbrand", {
     brandName: brandName
   });
   return data;

@@ -95,7 +95,7 @@ const NavBar =  observer ( () => {
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
           
-            <NavLink style={{color: 'white'}} to={REGISTRATION_ROUTE}>APPIX</NavLink>
+            <NavLink style={{color: 'white', textDecoration: 'none'}} to={REGISTRATION_ROUTE}>APPIX</NavLink>
           </Typography>
           </Toolbar>
         

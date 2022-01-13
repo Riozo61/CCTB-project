@@ -1,21 +1,19 @@
 import { DataGrid } from '@mui/x-data-grid';
 import { observer } from 'mobx-react-lite'
 import React from 'react'
-import EquipmentItem from './EquipmentItem'
 
 const columns = [
-  { field: 'type', headerName: 'Тип', width: 200 },
-  { field: 'brand', headerName: 'Поставщик', width: 190 },
-  { field: 'name', headerName: 'Название', width: 130 },
+  { field: 'brand', headerName: 'Бренд', width: 300 },
+  { field: 'name', headerName: 'Название', width: 300 },
   {
     field: 'typeObj',
-    headerName: 'Ед.измерения',
-    width: 150,
+    headerName: 'Тип',
+    width: 300,
   },
   {
     field: 'serialNumber',
-    headerName: 'Название магазина',
-    width: 150,
+    headerName: 'Серийный номер',
+    width: 300,
   },
 ];
 
